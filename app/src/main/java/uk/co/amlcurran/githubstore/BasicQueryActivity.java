@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import uk.co.amlcurran.githubstore.core.AccessStore;
+import uk.co.amlcurran.githubstore.core.AuthenticationCallback;
+
 
 public class BasicQueryActivity extends Activity {
 
@@ -12,6 +15,17 @@ public class BasicQueryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_query);
+
+        AccessStore accessStore = new AccessStore();
+        accessStore.authenticate(clientId(), clientSecret(), new AuthenticationCallback() {});
+    }
+
+    private String clientSecret() {
+        return Secrets.CLIENT_SECRET;
+    }
+
+    private String clientId() {
+        return Secrets.CLIENT_ID;
     }
 
 
