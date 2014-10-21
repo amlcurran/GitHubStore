@@ -1,0 +1,13 @@
+apply plugin: 'java'
+
+sourceSets {
+    test {
+        java {
+            srcDirs = ['src/main/test']
+        }
+    }
+}
+
+dependencies {
+    compile 'junit:junit:4.11'
+}
