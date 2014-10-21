@@ -1,7 +1,10 @@
-package uk.co.amlcurran.githubstore.core;
+package uk.co.amlcurran.githubstore;
 
-public class AccessStore {
+public class PersonalAccessAccessStore implements AccessStore {
+
+    @Override
     public void authenticate(String clientId, String clientSecret, AuthenticationCallback authenticationCallback) {
 
     }
+
 }

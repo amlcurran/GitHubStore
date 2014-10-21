@@ -1,4 +1,4 @@
-package uk.co.amlcurran.githubstore.core;
+package uk.co.amlcurran.githubstore;
 
 public interface AuthenticationCallback {
 }
