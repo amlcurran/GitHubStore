@@ -1,12 +1,12 @@
 package uk.co.amlcurran.githubstore;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class BasicQueryActivity extends Activity {
+public class BasicQueryActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
