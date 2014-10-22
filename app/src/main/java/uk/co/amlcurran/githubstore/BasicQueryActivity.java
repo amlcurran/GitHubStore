@@ -12,17 +12,6 @@ public class BasicQueryActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_query);
-
-        AccessStore accessStore = new PersonalAccessAccessStore();
-        accessStore.authenticate(clientId(), clientSecret(), new AuthenticationCallback() {});
-    }
-
-    private String clientSecret() {
-        return Secrets.CLIENT_SECRET;
-    }
-
-    private String clientId() {
-        return Secrets.CLIENT_ID;
     }
 
     @Override
