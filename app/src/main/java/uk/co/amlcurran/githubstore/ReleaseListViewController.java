@@ -49,6 +49,16 @@ public class ReleaseListViewController implements ViewController {
 
     }
 
+    @Override
+    public void pushed() {
+
+    }
+
+    @Override
+    public void popped() {
+
+    }
+
     private class ReleaseViewHolder extends RecyclerView.ViewHolder {
         private final TextView tagText;
         private final TextView bodyText;
