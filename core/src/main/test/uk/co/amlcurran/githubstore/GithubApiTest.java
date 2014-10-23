@@ -2,6 +2,7 @@ package uk.co.amlcurran.githubstore;
 
 import com.google.gson.JsonObject;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -9,12 +10,19 @@ import static org.junit.Assert.assertThat;
 
 public class GithubApiTest {
 
+    private FakeHttpClient fakeHttpClient;
+    private FakeJsonConverter fakeJsonConverter;
+    private GithubApi githubApi;
+
+    @Before
+    public void setUp() throws Exception {
+        fakeHttpClient = new FakeHttpClient();
+        fakeJsonConverter = new FakeJsonConverter();
+        githubApi = new GithubApi(fakeHttpClient, fakeJsonConverter);
+    }
+
     @Test
     public void whenGetReleasesIsCalled_TheHttpClientIsQueriedWithTheCorrectUrl() {
-        FakeHttpClient fakeHttpClient = new FakeHttpClient();
-        FakeJsonConverter fakeJsonConverter = new FakeJsonConverter();
-        GithubApi githubApi = new GithubApi(fakeHttpClient, fakeJsonConverter);
-
         githubApi.getReleases();
 
         assertThat(fakeHttpClient.get_param, is(GithubUrls.RELEASES_URL));
@@ -22,9 +30,6 @@ public class GithubApiTest {
 
     @Test
     public void whenTheReleasesResponseReturns_TheJsonConverterReceivesTheResult() {
-        FakeHttpClient fakeHttpClient = new FakeHttpClient();
-        FakeJsonConverter fakeJsonConverter = new FakeJsonConverter();
-        GithubApi githubApi = new GithubApi(fakeHttpClient, fakeJsonConverter);
 
         githubApi.getReleases();
 
@@ -45,23 +50,24 @@ public class GithubApiTest {
     public class GithubApi {
 
         private final HttpClient httpClient;
-        private final FakeJsonConverter fakeJsonConverter;
+        private final JsonConverter jsonConverter;
 
-        public GithubApi(HttpClient httpClient, FakeJsonConverter fakeJsonConverter) {
+        public GithubApi(HttpClient httpClient, JsonConverter jsonConverter) {
             this.httpClient = httpClient;
-            this.fakeJsonConverter = fakeJsonConverter;
+            this.jsonConverter = jsonConverter;
         }
 
         public void getReleases() {
             String result = httpClient.get(GithubUrls.RELEASES_URL);
-            fakeJsonConverter.convert(result);
+            jsonConverter.convert(result);
         }
 
     }
 
-    private class FakeJsonConverter {
+    private class FakeJsonConverter implements JsonConverter {
         public String convert_param;
 
+        @Override
         public JsonObject convert(String json) {
             convert_param = json;
             return null;
