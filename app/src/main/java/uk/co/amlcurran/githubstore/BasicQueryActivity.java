@@ -2,49 +2,41 @@ package uk.co.amlcurran.githubstore;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import com.android.volley.toolbox.Volley;
 
-import java.util.List;
-
 
 public class BasicQueryActivity extends ActionBarActivity {
+
+    private GithubApi api;
+    private TransitionManager transitionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_query);
+        api = new GithubApi(new VolleyClient(Volley.newRequestQueue(this)), new GsonJsonConverter());
+        transitionManager = new TransitionManager(this, ((ViewGroup) findViewById(R.id.content)));
 
-        GithubApi api = new GithubApi(new VolleyClient(Volley.newRequestQueue(this)), new GsonJsonConverter());
-        api.getReleases(new GithubApi.ResultListener<List<Release>>() {
-            @Override
-            public void received(List<Release> result) {
-                for (Release release : result) {
-                    Log.d("TAG", release.getTagName());
-                }
-            }
-        });
+        showReleases();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.basic_query, menu);
-        return true;
+    protected void onStart() {
+        super.onStart();
+        transitionManager.start();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    protected void onStop() {
+        super.onStop();
+        transitionManager.stop();
     }
+
+    private void showReleases() {
+        ReleaseListViewController releaseListViewController = new ReleaseListViewController(api);
+        transitionManager.push(releaseListViewController);
+    }
+
 }
