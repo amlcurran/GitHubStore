@@ -12,8 +12,8 @@ public class GithubApi {
         this.jsonConverter = jsonConverter;
     }
 
-    public List<Release> getReleases(final ResultListener<List<Release>> releaseListener) {
-        httpClient.get(GithubUrls.RELEASES_URL, new HttpClient.HttpClientListener<String>() {
+    public AsyncTask getReleases(final ResultListener<List<Release>> releaseListener) {
+        return httpClient.get(GithubUrls.RELEASES_URL, new HttpClient.HttpClientListener<String>() {
             @Override
             public void success(String result) {
                 releaseListener.received(jsonConverter.convertReleases(result));
@@ -24,7 +24,6 @@ public class GithubApi {
 
             }
         });
-        return null;
     }
 
     public interface ResultListener<ReturnType> {

@@ -18,6 +18,7 @@ public class ReleaseListViewController implements ViewController {
     private final GithubApi api;
     private final RecyclerView.Adapter<ReleaseViewHolder> releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();
+    private AsyncTask getReleases;
 
     public ReleaseListViewController(GithubApi api) {
         this.api = api;
@@ -35,7 +36,7 @@ public class ReleaseListViewController implements ViewController {
 
     @Override
     public void start() {
-        api.getReleases(new GithubApi.ResultListener<List<Release>>() {
+        getReleases = api.getReleases(new GithubApi.ResultListener<List<Release>>() {
             @Override
             public void received(List<Release> result) {
                 releaseList.addAll(result);
@@ -46,7 +47,9 @@ public class ReleaseListViewController implements ViewController {
 
     @Override
     public void stop() {
-
+        if (getReleases != null) {
+            getReleases.cancel();
+        }
     }
 
     @Override

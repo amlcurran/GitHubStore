@@ -47,7 +47,7 @@ public class GithubApiTest {
         public String get_param;
 
         @Override
-        public void get(String url, HttpClientListener<String> clientListener) {
+        public AsyncTask get(String url, HttpClientListener<String> clientListener) {
             get_param = url;
             clientListener.success(GET_RETURN_VALUE);
         }
