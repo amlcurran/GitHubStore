@@ -1,9 +1,9 @@
 package uk.co.amlcurran.githubstore;
 
-import com.google.gson.JsonObject;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -30,7 +30,6 @@ public class GithubApiTest {
 
     @Test
     public void whenTheReleasesResponseReturns_TheJsonConverterReceivesTheResult() {
-
         githubApi.getReleases();
 
         assertThat(fakeJsonConverter.convert_param, is(FakeHttpClient.GET_RETURN_VALUE));
@@ -47,28 +46,11 @@ public class GithubApiTest {
         }
     }
 
-    public class GithubApi {
-
-        private final HttpClient httpClient;
-        private final JsonConverter jsonConverter;
-
-        public GithubApi(HttpClient httpClient, JsonConverter jsonConverter) {
-            this.httpClient = httpClient;
-            this.jsonConverter = jsonConverter;
-        }
-
-        public void getReleases() {
-            String result = httpClient.get(GithubUrls.RELEASES_URL);
-            jsonConverter.convert(result);
-        }
-
-    }
-
     private class FakeJsonConverter implements JsonConverter {
         public String convert_param;
 
         @Override
-        public JsonObject convert(String json) {
+        public List<Release> convertReleases(String json) {
             convert_param = json;
             return null;
         }

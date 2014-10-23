@@ -1,7 +1,7 @@
 package uk.co.amlcurran.githubstore;
 
-import com.google.gson.JsonObject;
+import java.util.List;
 
 public interface JsonConverter {
-    JsonObject convert(String json);
+    List<Release> convertReleases(String json);
 }
