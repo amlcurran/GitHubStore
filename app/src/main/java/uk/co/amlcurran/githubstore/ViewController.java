@@ -10,4 +10,21 @@ public interface ViewController {
     void start();
 
     void stop();
+
+    static final ViewController NONE = new ViewController() {
+        @Override
+        public View inflateView(LayoutInflater layoutInflater, ViewGroup viewGroup) {
+            return null;
+        }
+
+        @Override
+        public void start() {
+
+        }
+
+        @Override
+        public void stop() {
+
+        }
+    };
 }
