@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uk.co.amlcurran.viewcontroller.ViewController;
+
 public class ReleaseListViewController implements ViewController {
     private final GithubApi api;
     private TextView releasesText;

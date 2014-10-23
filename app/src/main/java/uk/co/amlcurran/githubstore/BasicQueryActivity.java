@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import com.android.volley.toolbox.Volley;
 
+import uk.co.amlcurran.viewcontroller.TransitionManager;
+
 
 public class BasicQueryActivity extends ActionBarActivity {
 
