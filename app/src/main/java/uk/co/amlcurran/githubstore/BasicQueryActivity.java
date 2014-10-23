@@ -2,8 +2,13 @@ package uk.co.amlcurran.githubstore;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.android.volley.toolbox.Volley;
+
+import java.util.List;
 
 
 public class BasicQueryActivity extends ActionBarActivity {
@@ -12,6 +17,16 @@ public class BasicQueryActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_query);
+
+        GithubApi api = new GithubApi(new VolleyClient(Volley.newRequestQueue(this)), new GsonJsonConverter());
+        api.getReleases(new GithubApi.ResultListener<List<Release>>() {
+            @Override
+            public void received(List<Release> result) {
+                for (Release release : result) {
+                    Log.d("TAG", release.getTagName());
+                }
+            }
+        });
     }
 
     @Override

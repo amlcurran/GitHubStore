@@ -23,16 +23,23 @@ public class GithubApiTest {
 
     @Test
     public void whenGetReleasesIsCalled_TheHttpClientIsQueriedWithTheCorrectUrl() {
-        githubApi.getReleases();
+        githubApi.getReleases(new NoOperationResultListener());
 
         assertThat(fakeHttpClient.get_param, is(GithubUrls.RELEASES_URL));
     }
 
     @Test
     public void whenTheReleasesResponseReturns_TheJsonConverterReceivesTheResult() {
-        githubApi.getReleases();
+        githubApi.getReleases(new NoOperationResultListener());
 
         assertThat(fakeJsonConverter.convert_param, is(FakeHttpClient.GET_RETURN_VALUE));
+    }
+
+    private static class NoOperationResultListener implements GithubApi.ResultListener<List<Release>> {
+        @Override
+        public void received(List<Release> result) {
+
+        }
     }
 
     private class FakeHttpClient implements HttpClient {
@@ -40,9 +47,9 @@ public class GithubApiTest {
         public String get_param;
 
         @Override
-        public String get(String url) {
+        public void get(String url, HttpClientListener<String> clientListener) {
             get_param = url;
-            return GET_RETURN_VALUE;
+            clientListener.success(GET_RETURN_VALUE);
         }
     }
 
