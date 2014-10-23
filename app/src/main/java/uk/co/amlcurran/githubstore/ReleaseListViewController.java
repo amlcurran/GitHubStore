@@ -39,6 +39,9 @@ public class ReleaseListViewController implements ViewController {
         getReleases = api.getReleases(new GithubApi.ResultListener<List<Release>>() {
             @Override
             public void received(List<Release> result) {
+                int removedNumber = releaseList.size();
+                releaseList.clear();
+                releasesAdapter.notifyItemRangeRemoved(0, removedNumber);
                 releaseList.addAll(result);
                 releasesAdapter.notifyItemRangeInserted(0, result.size());
             }
