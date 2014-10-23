@@ -30,7 +30,8 @@ public class ReleaseListViewController implements ViewController {
         getReleases = api.getReleases(new GithubApi.ResultListener<List<Release>>() {
             @Override
             public void received(List<Release> result) {
-                releaseListView.showReleases(result);
+                releaseListView.removeAllReleases();
+                releaseListView.addReleases(result);
             }
         });
     }

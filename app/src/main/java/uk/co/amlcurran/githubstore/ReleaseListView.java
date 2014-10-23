@@ -22,10 +22,13 @@ public class ReleaseListView {
         releasesListView.setAdapter(releasesAdapter);
     }
 
-    public void showReleases(List<Release> result) {
+    public void removeAllReleases() {
         int removedNumber = releaseList.size();
         releaseList.clear();
         releasesAdapter.notifyItemRangeRemoved(0, removedNumber);
+    }
+
+    public void addReleases(List<Release> result) {
         releaseList.addAll(result);
         releasesAdapter.notifyItemRangeInserted(0, result.size());
     }
