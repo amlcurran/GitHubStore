@@ -15,19 +15,35 @@ public class VolleyClient implements HttpClient {
 
     @Override
     public AsyncTask get(String url, final HttpClientListener<String> clientListener) {
-        StringRequest request = new StringRequest(url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String s) {
-                clientListener.success(s);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                clientListener.failure(volleyError);
-            }
-        });
+        StringRequest request = new StringRequest(url, new StringListener(clientListener), new DefaultErrorListener(clientListener));
         requestQueue.add(request);
         return new VolleyRequestAsyncTask(request);
+    }
+
+    private static class StringListener implements Response.Listener<String> {
+        private final HttpClientListener<String> clientListener;
+
+        public StringListener(HttpClientListener<String> clientListener) {
+            this.clientListener = clientListener;
+        }
+
+        @Override
+        public void onResponse(String s) {
+            clientListener.success(s);
+        }
+    }
+
+    private static class DefaultErrorListener implements Response.ErrorListener {
+        private final HttpClientListener<String> clientListener;
+
+        public DefaultErrorListener(HttpClientListener<String> clientListener) {
+            this.clientListener = clientListener;
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError volleyError) {
+            clientListener.failure(volleyError);
+        }
     }
 
     private class VolleyRequestAsyncTask implements AsyncTask {
