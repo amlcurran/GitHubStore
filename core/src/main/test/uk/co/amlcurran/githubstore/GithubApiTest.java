@@ -17,9 +17,10 @@ public class GithubApiTest {
         assertThat(GithubUrls.RELEASES_URL, is(fakeHttpClient.get_param));
     }
 
-    private class FakeHttpClient {
+    private class FakeHttpClient implements HttpClient {
         public String get_param;
 
+        @Override
         public void get(String url) {
             get_param = url;
         }
@@ -27,14 +28,14 @@ public class GithubApiTest {
 
     public class GithubApi {
 
-        private final FakeHttpClient fakeHttpClient;
+        private final HttpClient httpClient;
 
-        public GithubApi(FakeHttpClient fakeHttpClient) {
-            this.fakeHttpClient = fakeHttpClient;
+        public GithubApi(HttpClient httpClient) {
+            this.httpClient = httpClient;
         }
 
         public void getReleases() {
-            fakeHttpClient.get(GithubUrls.RELEASES_URL);
+            httpClient.get(GithubUrls.RELEASES_URL);
         }
 
     }
