@@ -1,22 +1,28 @@
 package uk.co.amlcurran.githubstore;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GsonJsonConverter implements JsonConverter {
 
-    private final Gson gson;
-
-    public GsonJsonConverter() {
-        gson = new Gson();
-    }
-
     @Override
     public List<Release> convertReleases(String json) {
-        Type collectionType = new TypeToken<List<Release>>(){}.getType();
-        return gson.fromJson(json, collectionType);
+        List<Release> releases = new ArrayList<Release>();
+
+        JsonArray releasesArray = new JsonParser().parse(json).getAsJsonArray();
+        int size = releasesArray.size();
+        for (int i = 0; i < size; i++) {
+            JsonObject releaseObject = releasesArray.get(i).getAsJsonObject();
+            String tagName = releaseObject.get("tag_name").getAsString();
+            String body = releaseObject.get("body").getAsString();
+            Release release = new Release(tagName, body);
+            releases.add(release);
+        }
+
+        return releases;
     }
 }
