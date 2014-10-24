@@ -11,14 +11,14 @@ import uk.co.amlcurran.viewcontroller.TransitionManager;
 
 public class BasicQueryActivity extends ActionBarActivity {
 
-    private GithubApi api;
+    private GithubApi githubApi;
     private TransitionManager transitionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_query);
-        api = new GithubApi(new VolleyClient(Volley.newRequestQueue(this)), new GsonJsonConverter());
+        githubApi = new GithubApi(new VolleyClient(Volley.newRequestQueue(this)), new GsonJsonConverter());
         transitionManager = new TransitionManager(this, ((ViewGroup) findViewById(R.id.content)));
 
         showReleases();
@@ -37,7 +37,7 @@ public class BasicQueryActivity extends ActionBarActivity {
     }
 
     private void showReleases() {
-        ReleaseListViewController releaseListViewController = new ReleaseListViewController(api);
+        ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi);
         transitionManager.push(releaseListViewController);
     }
 
