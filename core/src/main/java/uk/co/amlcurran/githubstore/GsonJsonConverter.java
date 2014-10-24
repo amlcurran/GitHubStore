@@ -9,6 +9,8 @@ import java.util.List;
 
 public class GsonJsonConverter implements JsonConverter {
 
+    private static final String APK_CONTENT_TYPE = "application/vnd.android.package-archive";
+
     @Override
     public List<Release> convertReleases(String json) {
         List<Release> releases = new ArrayList<Release>();
@@ -16,13 +18,40 @@ public class GsonJsonConverter implements JsonConverter {
         JsonArray releasesArray = new JsonParser().parse(json).getAsJsonArray();
         int size = releasesArray.size();
         for (int i = 0; i < size; i++) {
-            JsonObject releaseObject = releasesArray.get(i).getAsJsonObject();
-            String tagName = releaseObject.get("tag_name").getAsString();
-            String body = releaseObject.get("body").getAsString();
-            Release release = new Release(tagName, body);
+            JsonObject releaseJsonObject = releasesArray.get(i).getAsJsonObject();
+            Release release = getReleaseFromJson(releaseJsonObject);
+            JsonArray assetsArray = releaseJsonObject.getAsJsonArray("assets");
+            List<ApkAsset> apkAssetList = createApkAssets(assetsArray);
+            release.addApkAssets(apkAssetList);
             releases.add(release);
         }
 
         return releases;
     }
+
+    private static List<ApkAsset> createApkAssets(JsonArray assetsArray) {
+        List<ApkAsset> assets = new ArrayList<ApkAsset>();
+        int size = assetsArray.size();
+        for (int i = 0; i < size; i++) {
+            JsonObject assetObject = assetsArray.get(i).getAsJsonObject();
+            String content_type = assetObject.get("content_type").getAsString();
+            if (APK_CONTENT_TYPE.equals(content_type)) {
+                ApkAsset asset = createApkAsset(assetObject);
+                assets.add(asset);
+            }
+        }
+        return assets;
+    }
+
+    private static ApkAsset createApkAsset(JsonObject assetObject) {
+        String url = assetObject.get("url").getAsString();
+        return new ApkAsset(url);
+    }
+
+    private static Release getReleaseFromJson(JsonObject asJsonObject) {
+        String tagName = asJsonObject.get("tag_name").getAsString();
+        String body = asJsonObject.get("body").getAsString();
+        return new Release(tagName, body);
+    }
+
 }
