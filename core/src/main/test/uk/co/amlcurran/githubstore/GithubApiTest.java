@@ -10,6 +10,7 @@ import static org.junit.Assert.assertThat;
 
 public class GithubApiTest {
 
+    private static final GithubApi.ErrorListener UNUSED_ERROR_LISTENER = null;
     private FakeHttpClient fakeHttpClient;
     private FakeJsonConverter fakeJsonConverter;
     private GithubApi githubApi;
@@ -18,7 +19,7 @@ public class GithubApiTest {
     public void setUp() throws Exception {
         fakeHttpClient = new FakeHttpClient();
         fakeJsonConverter = new FakeJsonConverter();
-        githubApi = new GithubApi(fakeHttpClient, fakeJsonConverter);
+        githubApi = new GithubApi(fakeHttpClient, fakeJsonConverter, UNUSED_ERROR_LISTENER);
     }
 
     @Test
@@ -50,6 +51,7 @@ public class GithubApiTest {
         public AsyncTask get(String url, HttpClientListener<String> clientListener) {
             get_param = url;
             clientListener.success(GET_RETURN_VALUE);
+            return null;
         }
     }
 

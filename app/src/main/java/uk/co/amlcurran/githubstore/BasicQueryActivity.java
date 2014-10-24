@@ -3,6 +3,7 @@ package uk.co.amlcurran.githubstore;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.Volley;
 
@@ -18,8 +19,8 @@ public class BasicQueryActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_query);
-        githubApi = new GithubApi(new VolleyClient(Volley.newRequestQueue(this)), new GsonJsonConverter());
-        transitionManager = new TransitionManager(this, ((ViewGroup) findViewById(R.id.content)));
+        githubApi = new GithubApi(new VolleyClient(Volley.newRequestQueue(BasicQueryActivity.this)), new GsonJsonConverter(), new ToastErrorListener());
+        transitionManager = new TransitionManager(BasicQueryActivity.this, ((ViewGroup) findViewById(R.id.content)));
 
         showReleases();
     }
@@ -41,4 +42,10 @@ public class BasicQueryActivity extends ActionBarActivity {
         transitionManager.push(releaseListViewController);
     }
 
+    private class ToastErrorListener implements GithubApi.ErrorListener {
+        @Override
+        public void apiError(Exception errorException) {
+            Toast.makeText(BasicQueryActivity.this, errorException.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }
