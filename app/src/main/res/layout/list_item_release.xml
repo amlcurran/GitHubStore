@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:minHeight="?android:attr/listPreferredItemHeight"
+              android:paddingLeft="?android:attr/listPreferredItemPaddingStart"
+              android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        <TextView android:id="@android:id/text1"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="8dip"
+                  tools:text="Primary"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <TextView android:id="@android:id/text2"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  tools:text="Secondary"
+                  android:maxLines="3"
+                  android:ellipsize="end"
+                  android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+    </LinearLayout>
+
+    <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:tint="@color/app_colour"
+            android:background="?android:attr/selectableItemBackground"
+            android:id="@+id/button_download"
+            android:src="@drawable/ic_file_download_white_36dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"/>
+</LinearLayout>

@@ -2,10 +2,10 @@ package uk.co.amlcurran.githubstore;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,11 +14,9 @@ import java.util.List;
 public class ReleaseListView {
     private final ReleaseAdapter releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();
-    private final View view;
     private final Listener listener;
 
     public ReleaseListView(View view, ReleaseListView.Listener listener) {
-        this.view = view;
         this.listener = listener;
         releasesAdapter = new ReleaseAdapter();
         RecyclerView releasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
@@ -45,7 +43,7 @@ public class ReleaseListView {
 
         @Override
         public ReleaseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(android.R.layout.simple_list_item_2, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_release, viewGroup, false);
             return new ReleaseViewHolder(view, listener);
         }
 
@@ -68,6 +66,7 @@ public class ReleaseListView {
         private final TextView tagText;
         private final TextView bodyText;
         private final Listener releaseSelectedListener;
+        private final ImageButton downloadButton;
         private Release release;
 
         public ReleaseViewHolder(View itemView, Listener releaseSelectedListener) {
@@ -75,9 +74,8 @@ public class ReleaseListView {
             this.releaseSelectedListener = releaseSelectedListener;
             tagText = (TextView) itemView.findViewById(android.R.id.text1);
             bodyText = ((TextView) itemView.findViewById(android.R.id.text2));
-            bodyText.setMaxLines(3);
-            bodyText.setEllipsize(TextUtils.TruncateAt.END);
-            itemView.setOnClickListener(onClickListener);
+            downloadButton = (ImageButton) itemView.findViewById(R.id.button_download);
+            downloadButton.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
