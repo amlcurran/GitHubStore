@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +14,7 @@ public class ReleaseListView {
     private final ReleaseAdapter releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();
     private final Listener listener;
+    private int downloadingIndex = -1;
 
     public ReleaseListView(View view, ReleaseListView.Listener listener) {
         this.listener = listener;
@@ -35,6 +35,12 @@ public class ReleaseListView {
         releasesAdapter.notifyItemRangeInserted(0, result.size());
     }
 
+    public void downloadingAsset(Release release, int apkIndex) {
+        int index = releaseList.indexOf(release);
+        downloadingIndex = index;
+        releasesAdapter.notifyItemChanged(index);
+    }
+
     public interface Listener {
         void downloadRelease(Release release);
     }
@@ -53,6 +59,9 @@ public class ReleaseListView {
             releaseViewHolder.release = release;
             releaseViewHolder.tagText.setText(release.getReleaseName());
             releaseViewHolder.bodyText.setText(release.getBody());
+            if (i == downloadingIndex) {
+                releaseViewHolder.downloadButton.setDownloading();
+            }
         }
 
         @Override
@@ -66,7 +75,7 @@ public class ReleaseListView {
         private final TextView tagText;
         private final TextView bodyText;
         private final Listener releaseSelectedListener;
-        private final ImageButton downloadButton;
+        private final DownloadButton downloadButton;
         private Release release;
 
         public ReleaseViewHolder(View itemView, Listener releaseSelectedListener) {
@@ -74,7 +83,7 @@ public class ReleaseListView {
             this.releaseSelectedListener = releaseSelectedListener;
             tagText = (TextView) itemView.findViewById(android.R.id.text1);
             bodyText = ((TextView) itemView.findViewById(android.R.id.text2));
-            downloadButton = (ImageButton) itemView.findViewById(R.id.button_download);
+            downloadButton = (DownloadButton) itemView.findViewById(R.id.button_download);
             downloadButton.setOnClickListener(onClickListener);
         }
 

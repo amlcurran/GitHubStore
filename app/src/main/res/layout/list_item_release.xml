@@ -6,7 +6,8 @@
               android:layout_height="match_parent"
               android:minHeight="?android:attr/listPreferredItemHeight"
               android:paddingLeft="?android:attr/listPreferredItemPaddingStart"
-              android:paddingStart="?android:attr/listPreferredItemPaddingStart">
+              android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:animateLayoutChanges="true">
 
     <LinearLayout
             android:orientation="vertical"
@@ -31,13 +32,10 @@
 
     </LinearLayout>
 
-    <ImageButton
-            android:layout_width="48dp"
+    <view
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:tint="@color/app_colour"
-            android:background="?android:attr/selectableItemBackground"
-            android:id="@+id/button_download"
-            android:src="@drawable/ic_file_download_white_36dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"/>
+            class="uk.co.amlcurran.githubstore.DownloadButton"
+            android:id="@+id/button_download"/>
+
 </LinearLayout>

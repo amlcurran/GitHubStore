@@ -64,6 +64,7 @@ public class ReleaseListViewController implements ViewController {
             int size = release.getApkAssets().size();
             if (size == 1) {
                 downloader.downloadApk(release, 0);
+                releaseListView.downloadingAsset(release, 0);
             } else if (size == 0) {
                 toaster.noApksAvailable();
             } else {
