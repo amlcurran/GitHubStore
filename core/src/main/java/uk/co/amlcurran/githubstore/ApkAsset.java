@@ -3,13 +3,13 @@ package uk.co.amlcurran.githubstore;
 import java.net.URI;
 
 public class ApkAsset {
-    private final String url;
+    private final URI uri;
 
-    public ApkAsset(String url) {
-        this.url = url;
+    public ApkAsset(URI uri) {
+        this.uri = uri;
     }
 
     public URI getURI() {
-        return URI.create(url);
+        return uri;
     }
 }

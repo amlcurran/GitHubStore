@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +45,8 @@ public class GsonJsonConverter implements JsonConverter {
     }
 
     private static ApkAsset createApkAsset(JsonObject assetObject) {
-        String url = assetObject.get("url").getAsString();
-        return new ApkAsset(url);
+        String url = assetObject.get("browser_download_url").getAsString();
+        return new ApkAsset(URI.create(url));
     }
 
     private static Release getReleaseFromJson(JsonObject asJsonObject) {
