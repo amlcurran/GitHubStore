@@ -58,11 +58,12 @@ public class ReleaseListViewController implements ViewController {
     }
 
     private ReleaseListView.Listener listener = new ReleaseListView.Listener() {
+
         @Override
-        public void releaseSelected(Release release) {
+        public void downloadRelease(Release release) {
             int size = release.getApkAssets().size();
             if (size == 1) {
-                downloader.downloadApk(release.getApkAssets().get(0));
+                downloader.downloadApk(release, 0);
             } else if (size == 0) {
                 toaster.noApksAvailable();
             } else {

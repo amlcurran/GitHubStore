@@ -36,7 +36,7 @@ public class ReleaseListView {
     }
 
     public interface Listener {
-        void releaseSelected(Release release);
+        void downloadRelease(Release release);
     }
 
     private class ReleaseAdapter extends RecyclerView.Adapter<ReleaseViewHolder> {
@@ -51,7 +51,7 @@ public class ReleaseListView {
         public void onBindViewHolder(ReleaseViewHolder releaseViewHolder, int i) {
             Release release = releaseList.get(i);
             releaseViewHolder.release = release;
-            releaseViewHolder.tagText.setText(release.getTagName());
+            releaseViewHolder.tagText.setText(release.getReleaseName());
             releaseViewHolder.bodyText.setText(release.getBody());
         }
 
@@ -81,7 +81,7 @@ public class ReleaseListView {
         private View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 releaseSelectedListener.releaseSelected(release);
+                 releaseSelectedListener.downloadRelease(release);
             }
         };
 

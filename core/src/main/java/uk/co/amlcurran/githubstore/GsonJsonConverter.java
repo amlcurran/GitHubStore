@@ -52,7 +52,8 @@ public class GsonJsonConverter implements JsonConverter {
     private static Release getReleaseFromJson(JsonObject asJsonObject) {
         String tagName = asJsonObject.get("tag_name").getAsString();
         String body = asJsonObject.get("body").getAsString();
-        return new Release(tagName, body);
+        String releaseName = asJsonObject.get("name").getAsString();
+        return new Release("Messages", releaseName, tagName, body);
     }
 
 }
