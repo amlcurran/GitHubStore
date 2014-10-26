@@ -7,21 +7,21 @@ import android.view.ViewGroup;
 
 public class TransitionManager {
 
-    private final Activity activity;
     private final ViewGroup viewGroup;
+    private final LayoutInflater layoutInflater;
 
     @NonNull
     private ViewController currentViewController = ViewController.NONE;
 
     public TransitionManager(Activity activity, ViewGroup viewGroup) {
-        this.activity = activity;
         this.viewGroup = viewGroup;
+        this.layoutInflater = LayoutInflater.from(activity);
     }
 
     public void push(@NonNull ViewController viewController) {
         currentViewController.popped();
         viewGroup.removeAllViews();
-        viewGroup.addView(viewController.inflateView(LayoutInflater.from(activity), viewGroup));
+        viewGroup.addView(viewController.inflateView(layoutInflater, viewGroup));
         viewController.pushed();
         currentViewController = viewController;
     }

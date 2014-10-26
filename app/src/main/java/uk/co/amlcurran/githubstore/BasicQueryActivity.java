@@ -19,7 +19,7 @@ public class BasicQueryActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic_query);
-        githubApi = new GithubApi(new VolleyClient(Volley.newRequestQueue(BasicQueryActivity.this)), new GsonJsonConverter(), new ToastErrorListener());
+        githubApi = new GithubApi(new VolleyClient(Volley.newRequestQueue(BasicQueryActivity.this)), new GsonJsonConverter(), new ViewControllerErrorListener());
         transitionManager = new TransitionManager(BasicQueryActivity.this, ((ViewGroup) findViewById(R.id.content)));
 
         showReleases();
@@ -46,6 +46,13 @@ public class BasicQueryActivity extends ActionBarActivity {
         @Override
         public void apiError(Exception errorException) {
             Toast.makeText(BasicQueryActivity.this, errorException.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class ViewControllerErrorListener implements GithubApi.ErrorListener {
+        @Override
+        public void apiError(Exception errorException) {
+            transitionManager.push(new ErrorViewController());
         }
     }
 }
