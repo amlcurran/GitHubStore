@@ -1,5 +1,8 @@
 package uk.co.amlcurran.githubstore;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
@@ -38,7 +41,9 @@ public class BasicQueryActivity extends ActionBarActivity {
     }
 
     private void showReleases() {
-        ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi);
+        DownloadServiceDownloader downloader = new DownloadServiceDownloader((DownloadManager) getSystemService(DOWNLOAD_SERVICE));
+        SimpleToaster toaster = new SimpleToaster(this);
+        ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi, downloader, toaster);
         transitionManager.push(releaseListViewController);
     }
 
@@ -53,6 +58,38 @@ public class BasicQueryActivity extends ActionBarActivity {
         @Override
         public void apiError(Exception errorException) {
             transitionManager.push(new ErrorViewController());
+        }
+    }
+
+    private class DownloadServiceDownloader implements Downloader {
+        private final DownloadManager downloadManager;
+
+        public DownloadServiceDownloader(DownloadManager downloadManager) {
+            this.downloadManager = downloadManager;
+        }
+
+        @Override
+        public void downloadApk(ApkAsset apkAsset) {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkAsset.getURI().toString()));
+            downloadManager.enqueue(request);
+        }
+    }
+
+    private class SimpleToaster implements Toaster {
+        private final Context context;
+
+        public SimpleToaster(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void noApksAvailable() {
+            Toast.makeText(context, R.string.no_apks, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void multipleApksAvailable() {
+            Toast.makeText(context, R.string.multiple_apks, Toast.LENGTH_SHORT).show();
         }
     }
 }

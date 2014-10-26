@@ -13,15 +13,19 @@ public class ReleaseListViewController implements ViewController {
     private final GithubApi api;
     private AsyncTask getReleases;
     private ReleaseListView releaseListView;
+    private Downloader downloader;
+    private Toaster toaster;
 
-    public ReleaseListViewController(GithubApi api) {
+    public ReleaseListViewController(GithubApi api, Downloader downloader, Toaster toaster) {
         this.api = api;
+        this.downloader = downloader;
+        this.toaster = toaster;
     }
 
     @Override
     public View inflateView(LayoutInflater layoutInflater, ViewGroup viewGroup) {
         View view = layoutInflater.inflate(R.layout.view_controller_release_list, viewGroup, false);
-        releaseListView = new ReleaseListView(view);
+        releaseListView = new ReleaseListView(view, listener);
         return view;
     }
 
@@ -52,4 +56,19 @@ public class ReleaseListViewController implements ViewController {
     public void popped() {
 
     }
+
+    private ReleaseListView.Listener listener = new ReleaseListView.Listener() {
+        @Override
+        public void releaseSelected(Release release) {
+            int size = release.getApkAssets().size();
+            if (size == 1) {
+                downloader.downloadApk(release.getApkAssets().get(0));
+            } else if (size == 0) {
+                toaster.noApksAvailable();
+            } else {
+                toaster.multipleApksAvailable();
+            }
+        }
+    };
+
 }
