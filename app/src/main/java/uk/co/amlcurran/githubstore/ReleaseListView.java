@@ -13,8 +13,9 @@ import java.util.List;
 public class ReleaseListView {
     private final ReleaseAdapter releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();
+    private final List<Release> downloadedItems = new ArrayList<Release>();
+    private final List<Release> downloadingItems = new ArrayList<Release>();
     private final Listener listener;
-    private int downloadingIndex = -1;
 
     public ReleaseListView(View view, ReleaseListView.Listener listener) {
         this.listener = listener;
@@ -37,7 +38,14 @@ public class ReleaseListView {
 
     public void downloadingAsset(Release release, int apkIndex) {
         int index = releaseList.indexOf(release);
-        downloadingIndex = index;
+        downloadingItems.add(release);
+        releasesAdapter.notifyItemChanged(index);
+    }
+
+    public void downloadedAsset(Release release, int apkIndex) {
+        int index = releaseList.indexOf(release);
+        downloadedItems.add(release);
+        downloadingItems.remove(release);
         releasesAdapter.notifyItemChanged(index);
     }
 
@@ -59,9 +67,19 @@ public class ReleaseListView {
             releaseViewHolder.release = release;
             releaseViewHolder.tagText.setText(release.getReleaseName());
             releaseViewHolder.bodyText.setText(release.getBody());
-            if (i == downloadingIndex) {
+            if (isDownloading(release)) {
                 releaseViewHolder.downloadButton.setDownloading();
+            } else if (isDownloaded(release)) {
+                releaseViewHolder.downloadButton.setDownloaded();
             }
+        }
+
+        private boolean isDownloaded(Release release) {
+            return downloadedItems.contains(release);
+        }
+
+        private boolean isDownloading(Release release) {
+            return downloadingItems.contains(release);
         }
 
         @Override

@@ -1,14 +1,16 @@
 package uk.co.amlcurran.githubstore;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class DownloadButton extends FrameLayout {
 
-    private final View button;
+    private final ImageView button;
     private final View progress;
 
     public DownloadButton(Context context) {
@@ -26,7 +28,7 @@ public class DownloadButton extends FrameLayout {
     public DownloadButton(Context context, AttributeSet attrs, int defStyleAttr, int whatever) {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.download_button, this);
-        button = findViewById(R.id.download_button);
+        button = ((ImageView) findViewById(R.id.download_button));
         progress = findViewById(R.id.download_progress);
     }
 
@@ -34,4 +36,12 @@ public class DownloadButton extends FrameLayout {
         button.setVisibility(GONE);
         progress.setVisibility(VISIBLE);
     }
+
+    public void setDownloaded() {
+        button.setVisibility(VISIBLE);
+        button.setImageResource(R.drawable.ic_done_grey600_36dp);
+        progress.setVisibility(GONE);
+        button.setBackgroundColor(Color.GREEN);
+    }
+
 }

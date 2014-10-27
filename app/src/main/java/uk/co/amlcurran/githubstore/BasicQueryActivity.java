@@ -2,7 +2,6 @@ package uk.co.amlcurran.githubstore;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ViewGroup;
@@ -58,23 +57,6 @@ public class BasicQueryActivity extends ActionBarActivity {
         @Override
         public void apiError(Exception errorException) {
             transitionManager.push(new ErrorViewController());
-        }
-    }
-
-    private class DownloadServiceDownloader implements Downloader {
-        private final DownloadManager downloadManager;
-
-        public DownloadServiceDownloader(DownloadManager downloadManager) {
-            this.downloadManager = downloadManager;
-        }
-
-        @Override
-        public void downloadApk(Release release, int apkIndex) {
-            ApkAsset apkAsset = release.getApkAssets().get(apkIndex);
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkAsset.getURI().toString()));
-            request.setTitle(release.getProjectName());
-            request.setDescription(release.getReleaseName());
-            downloadManager.enqueue(request);
         }
     }
 
