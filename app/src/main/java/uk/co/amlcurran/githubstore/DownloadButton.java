@@ -12,6 +12,7 @@ public class DownloadButton extends FrameLayout {
 
     private final ImageView button;
     private final View progress;
+    private Listener listener;
 
     public DownloadButton(Context context) {
         this(context, null, 0);
@@ -29,6 +30,7 @@ public class DownloadButton extends FrameLayout {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.download_button, this);
         button = ((ImageView) findViewById(R.id.download_button));
+        button.setOnClickListener(new StartDownloadListener());
         progress = findViewById(R.id.download_progress);
     }
 
@@ -40,8 +42,37 @@ public class DownloadButton extends FrameLayout {
     public void setDownloaded() {
         button.setVisibility(VISIBLE);
         button.setImageResource(R.drawable.ic_done_grey600_36dp);
+        button.setOnClickListener(new OpenApkListener());
         progress.setVisibility(GONE);
         button.setBackgroundColor(Color.GREEN);
     }
 
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    public interface Listener {
+
+        void requestDownload();
+
+        void openApk();
+    }
+
+    private class StartDownloadListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (listener != null) {
+                listener.requestDownload();
+            }
+        }
+    }
+
+    private class OpenApkListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (listener != null) {
+                listener.openApk();
+            }
+        }
+    }
 }

@@ -51,6 +51,8 @@ public class ReleaseListView {
 
     public interface Listener {
         void downloadRelease(Release release);
+
+        void openApk(Release release);
     }
 
     private class ReleaseAdapter extends RecyclerView.Adapter<ReleaseViewHolder> {
@@ -92,25 +94,27 @@ public class ReleaseListView {
     private static class ReleaseViewHolder extends RecyclerView.ViewHolder {
         private final TextView tagText;
         private final TextView bodyText;
-        private final Listener releaseSelectedListener;
         private final DownloadButton downloadButton;
         private Release release;
 
-        public ReleaseViewHolder(View itemView, Listener releaseSelectedListener) {
+        public ReleaseViewHolder(View itemView, final Listener releaseSelectedListener) {
             super(itemView);
-            this.releaseSelectedListener = releaseSelectedListener;
             tagText = (TextView) itemView.findViewById(android.R.id.text1);
             bodyText = ((TextView) itemView.findViewById(android.R.id.text2));
             downloadButton = (DownloadButton) itemView.findViewById(R.id.button_download);
-            downloadButton.setOnClickListener(onClickListener);
-        }
+            downloadButton.setListener(new DownloadButton.Listener() {
 
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 releaseSelectedListener.downloadRelease(release);
-            }
-        };
+                @Override
+                public void requestDownload() {
+                    releaseSelectedListener.downloadRelease(release);
+                }
+
+                @Override
+                public void openApk() {
+                    releaseSelectedListener.openApk(release);
+                }
+            });
+        }
 
     }
 }

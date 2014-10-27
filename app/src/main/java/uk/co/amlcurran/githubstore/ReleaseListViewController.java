@@ -76,6 +76,11 @@ public class ReleaseListViewController implements ViewController {
                 toaster.multipleApksAvailable();
             }
         }
+
+        @Override
+        public void openApk(Release release) {
+
+        }
     };
 
 }
