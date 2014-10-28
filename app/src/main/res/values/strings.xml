@@ -7,5 +7,6 @@
     <string name="no_apks">No APKs to download</string>
     <string name="multiple_apks">Multiple APKs available. This isn\'t currently supported!</string>
     <string name="no_body">No description</string>
+    <string name="search">Search</string>
 
 </resources>

@@ -3,6 +3,8 @@ package uk.co.amlcurran.githubstore;
 import android.app.DownloadManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -36,6 +38,17 @@ public class BasicQueryActivity extends ActionBarActivity {
     protected void onStop() {
         super.onStop();
         transitionManager.stop();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.basic_query, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     private void showReleases() {
