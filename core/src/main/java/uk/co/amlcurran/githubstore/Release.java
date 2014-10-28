@@ -10,13 +10,15 @@ public class Release {
     private final List<ApkAsset> apkAssets = new ArrayList<ApkAsset>();
     private final int id;
     private final String projectName;
+    private final Time time;
 
-    public Release(int id, String projectName, String releaseName, String tagName, String body) {
+    public Release(int id, String projectName, String releaseName, String tagName, String body, Time creationTime) {
         this.id = id;
         this.projectName = projectName;
         this.releaseName = releaseName;
         this.tagName = tagName;
         this.body = body;
+        this.time = creationTime;
     }
 
     public int getId() {
@@ -45,5 +47,9 @@ public class Release {
 
     public String getProjectName() {
         return projectName;
+    }
+
+    public Time getDate() {
+        return time;
     }
 }

@@ -5,12 +5,15 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.net.URI;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GsonJsonConverter implements JsonConverter {
 
     private static final String APK_CONTENT_TYPE = "application/vnd.android.package-archive";
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     @Override
     public List<Release> convertReleases(String json) {
@@ -54,7 +57,19 @@ public class GsonJsonConverter implements JsonConverter {
         String body = asJsonObject.get("body").getAsString();
         String releaseName = asJsonObject.get("name").getAsString();
         int id = asJsonObject.get("id").getAsInt();
-        return new Release(id, "Droidcon UK 2014", releaseName, tagName, body);
+        String publishTimeString = asJsonObject.get("created_at").getAsString();
+        Time publishTime = getTime(publishTimeString);
+        return new Release(id, "Droidcon UK 2014", releaseName, tagName, body, publishTime);
+    }
+
+    private static Time getTime(String publishTimeString) {
+        long millis = 0;
+        try {
+            millis = simpleDateFormat.parse(publishTimeString).getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return Time.fromMillis(millis);
     }
 
 }
