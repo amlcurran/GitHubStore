@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 public class DownloadButton extends FrameLayout {
 
+    private static final int ROTATION_DEGREES = 360;
     private final ImageView imageView;
     private final View progress;
     private final int translation;
@@ -45,9 +46,20 @@ public class DownloadButton extends FrameLayout {
         if (myState != State.DOWNLOADING) {
             myState = State.DOWNLOADING;
             View view = imageView;
-            animateViewOut(view);
+            animateViewOutWithRotation(view);
             animateViewIn(progress);
         }
+    }
+
+    private void animateViewOutWithRotation(View view) {
+        float scaleEnd = 0.4f;
+        view.animate()
+                .setInterpolator(interpolator)
+                .scaleX(scaleEnd)
+                .rotationBy(ROTATION_DEGREES)
+                .scaleY(scaleEnd)
+                .alpha(0f)
+                .withEndAction(new VisibilityGone(view));
     }
 
     private int getInterpolator() {
@@ -61,26 +73,43 @@ public class DownloadButton extends FrameLayout {
     public void setDownloaded() {
         if (myState != State.DOWNLOADED) {
             myState = State.DOWNLOADED;
-            animateViewIn(imageView);
+            animateViewInWithRotation(imageView);
             animateViewOut(progress);
             imageView.setImageResource(R.drawable.ic_done_grey600_36dp);
             setOnClickListener(new OpenApkListener());
         }
     }
 
-    private void animateViewIn(View view) {
-        view.setTranslationX(translation);
+    private void animateViewInWithRotation(View view) {
+        float scaleEnd = 0.4f;
+        view.setScaleX(scaleEnd);
+        view.setScaleY(scaleEnd);
+        view.setAlpha(0);
         view.animate()
-                .translationX(0)
+                .rotationBy(ROTATION_DEGREES)
+                .scaleY(1)
+                .scaleX(1)
+                .alpha(1f)
+                .withStartAction(new VisibilityVisibile(view));
+    }
+
+    private void animateViewIn(View view) {
+        //view.setTranslationX(translation);
+        view.setScaleX(1);
+        view.setScaleY(1);
+        view.setAlpha(0);
+        view.animate()
+                //.translationX(0)
                 .alpha(1f)
                 .withStartAction(new VisibilityVisibile(view));
     }
 
     private void animateViewOut(View view) {
-        view.setTranslationX(0);
+        float scaleEnd = 0.4f;
         view.animate()
                 .setInterpolator(interpolator)
-                .translationX(-translation)
+                .scaleX(scaleEnd)
+                .scaleY(scaleEnd)
                 .alpha(0f)
                 .withEndAction(new VisibilityGone(view));
     }
@@ -128,7 +157,7 @@ public class DownloadButton extends FrameLayout {
 
         @Override
         public void run() {
-            view.setVisibility(GONE);
+            view.setVisibility(INVISIBLE);
         }
     }
 

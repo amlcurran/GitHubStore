@@ -15,10 +15,10 @@
             android:paddingRight="8dp"/>
 
     <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/download_progress"
-            android:visibility="gone"
+            android:visibility="invisible"
             android:layout_gravity="center"/>
 
 </merge>
