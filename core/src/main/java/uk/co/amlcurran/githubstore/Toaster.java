@@ -8,4 +8,6 @@ public interface Toaster {
      * @deprecated this should be covered as a feature
      */
     void multipleApksAvailable();
+
+    void toast(String toast);
 }

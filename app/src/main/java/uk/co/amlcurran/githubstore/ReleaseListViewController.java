@@ -11,15 +11,17 @@ import uk.co.amlcurran.viewcontroller.ViewController;
 public class ReleaseListViewController implements ViewController {
 
     private final GithubApi api;
+    private final Downloader downloader;
+    private final Installer installer;
+    private final Toaster toaster;
     private AsyncTask getReleases;
     private ReleaseListView releaseListView;
-    private Downloader downloader;
-    private Toaster toaster;
 
-    public ReleaseListViewController(GithubApi api, Downloader downloader, Toaster toaster) {
+    public ReleaseListViewController(GithubApi api, Downloader downloader, Toaster toaster, Installer installer) {
         this.api = api;
         this.downloader = downloader;
         this.toaster = toaster;
+        this.installer = installer;
     }
 
     @Override
@@ -79,7 +81,8 @@ public class ReleaseListViewController implements ViewController {
 
         @Override
         public void openApk(Release release) {
-
+            installer.install(release);
+            toaster.toast("Open sesame");
         }
     };
 

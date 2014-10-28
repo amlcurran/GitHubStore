@@ -8,13 +8,19 @@ public class Release {
     private final String tagName;
     private final String body;
     private final List<ApkAsset> apkAssets = new ArrayList<ApkAsset>();
+    private final int id;
     private final String projectName;
 
-    public Release(String projectName, String releaseName, String tagName, String body) {
+    public Release(int id, String projectName, String releaseName, String tagName, String body) {
+        this.id = id;
         this.projectName = projectName;
         this.releaseName = releaseName;
         this.tagName = tagName;
         this.body = body;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getReleaseName() {

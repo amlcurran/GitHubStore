@@ -53,7 +53,8 @@ public class GsonJsonConverter implements JsonConverter {
         String tagName = asJsonObject.get("tag_name").getAsString();
         String body = asJsonObject.get("body").getAsString();
         String releaseName = asJsonObject.get("name").getAsString();
-        return new Release("Messages", releaseName, tagName, body);
+        int id = asJsonObject.get("id").getAsInt();
+        return new Release(id, "Messages", releaseName, tagName, body);
     }
 
 }
