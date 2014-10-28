@@ -5,6 +5,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="no_apks">No APKs to download</string>
-    <string name="multiple_apks">Multiple APKs available. This is currently supported!</string>
+    <string name="multiple_apks">Multiple APKs available. This isn\'t currently supported!</string>
 
 </resources>
