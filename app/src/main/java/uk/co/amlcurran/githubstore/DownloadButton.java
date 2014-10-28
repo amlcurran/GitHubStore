@@ -17,6 +17,7 @@ public class DownloadButton extends FrameLayout {
     private final View progress;
     private final int translation;
     private final Interpolator interpolator;
+    private final int animationDuration;
     private Listener listener;
     private State myState = State.IDLE;
 
@@ -40,6 +41,7 @@ public class DownloadButton extends FrameLayout {
         progress = findViewById(R.id.download_progress);
         translation = getResources().getDimensionPixelOffset(R.dimen.button_translation);
         interpolator = AnimationUtils.loadInterpolator(getContext(), getInterpolator());
+        animationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
     }
 
     public void setDownloading() {
@@ -55,6 +57,7 @@ public class DownloadButton extends FrameLayout {
         float scaleEnd = 0.4f;
         view.animate()
                 .setInterpolator(interpolator)
+                .setDuration(animationDuration)
                 .scaleX(scaleEnd)
                 .rotationBy(ROTATION_DEGREES)
                 .scaleY(scaleEnd)
@@ -87,6 +90,7 @@ public class DownloadButton extends FrameLayout {
         view.setAlpha(0);
         view.animate()
                 .rotationBy(ROTATION_DEGREES)
+                .setDuration(animationDuration)
                 .scaleY(1)
                 .scaleX(1)
                 .alpha(1f)
@@ -94,12 +98,11 @@ public class DownloadButton extends FrameLayout {
     }
 
     private void animateViewIn(View view) {
-        //view.setTranslationX(translation);
         view.setScaleX(1);
         view.setScaleY(1);
         view.setAlpha(0);
         view.animate()
-                //.translationX(0)
+                .setDuration(animationDuration)
                 .alpha(1f)
                 .withStartAction(new VisibilityVisibile(view));
     }
@@ -108,6 +111,7 @@ public class DownloadButton extends FrameLayout {
         float scaleEnd = 0.4f;
         view.animate()
                 .setInterpolator(interpolator)
+                .setDuration(animationDuration)
                 .scaleX(scaleEnd)
                 .scaleY(scaleEnd)
                 .alpha(0f)

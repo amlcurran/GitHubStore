@@ -8,5 +8,6 @@
     <string name="multiple_apks">Multiple APKs available. This isn\'t currently supported!</string>
     <string name="no_body">No description</string>
     <string name="search">Search</string>
+    <string name="latest">Latest</string>
 
 </resources>

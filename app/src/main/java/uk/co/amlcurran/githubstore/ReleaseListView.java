@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,13 +73,29 @@ public class ReleaseListView {
         public void onBindViewHolder(ReleaseViewHolder releaseViewHolder, int i) {
             Release release = releaseList.get(i);
             releaseViewHolder.release = release;
-            releaseViewHolder.tagText.setText(formatTitle(release));
+            if (i == 0) {
+                releaseViewHolder.tagText.setText(formatTitleAsLatest(release));
+            } else {
+                releaseViewHolder.tagText.setText(formatTitle(release));
+            }
             releaseViewHolder.bodyText.setText(formatDescription(release));
             if (isDownloading(release)) {
                 releaseViewHolder.downloadButton.setDownloading();
             } else if (isDownloaded(release)) {
                 releaseViewHolder.downloadButton.setDownloaded();
             }
+        }
+
+        private CharSequence formatTitleAsLatest(Release release) {
+            Truss truss = new Truss();
+            truss.append(formatTitle(release))
+                    .append(" ")
+                    .pushSpan(new ForegroundColorSpan(resources.getColor(R.color.app_colour)))
+                    .pushSpan(new RelativeSizeSpan(0.6f))
+                    .append(resources.getString(R.string.latest))
+                    .popSpan()
+                    .popSpan();
+            return truss.build();
         }
 
         private String formatDescription(Release release) {
