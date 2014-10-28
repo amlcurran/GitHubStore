@@ -82,7 +82,6 @@ public class ReleaseListViewController implements ViewController {
         @Override
         public void openApk(Release release) {
             installer.install(release);
-            toaster.toast("Open sesame");
         }
     };
 
