@@ -54,7 +54,7 @@ public class GsonJsonConverter implements JsonConverter {
         String body = asJsonObject.get("body").getAsString();
         String releaseName = asJsonObject.get("name").getAsString();
         int id = asJsonObject.get("id").getAsInt();
-        return new Release(id, "Messages", releaseName, tagName, body);
+        return new Release(id, "Droidcon UK 2014", releaseName, tagName, body);
     }
 
 }

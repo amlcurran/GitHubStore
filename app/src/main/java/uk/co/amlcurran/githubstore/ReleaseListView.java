@@ -1,7 +1,9 @@
 package uk.co.amlcurran.githubstore;
 
+import android.content.res.Resources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,11 @@ public class ReleaseListView {
     private final List<Release> downloadedItems = new ArrayList<Release>();
     private final List<Release> downloadingItems = new ArrayList<Release>();
     private final Listener listener;
+    private final Resources resources;
 
-    public ReleaseListView(View view, ReleaseListView.Listener listener) {
+    public ReleaseListView(View view, Listener listener, Resources resources) {
         this.listener = listener;
+        this.resources = resources;
         releasesAdapter = new ReleaseAdapter();
         RecyclerView releasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
         releasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -67,12 +71,27 @@ public class ReleaseListView {
         public void onBindViewHolder(ReleaseViewHolder releaseViewHolder, int i) {
             Release release = releaseList.get(i);
             releaseViewHolder.release = release;
-            releaseViewHolder.tagText.setText(release.getReleaseName());
-            releaseViewHolder.bodyText.setText(release.getBody());
+            releaseViewHolder.tagText.setText(formatTitle(release));
+            releaseViewHolder.bodyText.setText(formatDescription(release));
             if (isDownloading(release)) {
                 releaseViewHolder.downloadButton.setDownloading();
             } else if (isDownloaded(release)) {
                 releaseViewHolder.downloadButton.setDownloaded();
+            }
+        }
+
+        private String formatDescription(Release release) {
+            if (TextUtils.isEmpty(release.getBody())) {
+                return resources.getString(R.string.no_body);
+            }
+            return release.getBody();
+        }
+
+        private CharSequence formatTitle(Release release) {
+            if (TextUtils.isEmpty(release.getReleaseName())) {
+                return release.getTagName();
+            } else {
+                return release.getReleaseName();
             }
         }
 

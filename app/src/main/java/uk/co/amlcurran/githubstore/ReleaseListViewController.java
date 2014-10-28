@@ -27,7 +27,7 @@ public class ReleaseListViewController implements ViewController {
     @Override
     public View inflateView(LayoutInflater layoutInflater, ViewGroup viewGroup) {
         View view = layoutInflater.inflate(R.layout.view_controller_release_list, viewGroup, false);
-        releaseListView = new ReleaseListView(view, listener);
+        releaseListView = new ReleaseListView(view, listener, layoutInflater.getContext().getResources());
         return view;
     }
 
