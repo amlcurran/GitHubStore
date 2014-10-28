@@ -4,10 +4,7 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:minHeight="?android:attr/listPreferredItemHeight"
-              android:paddingLeft="?android:attr/listPreferredItemPaddingStart"
-              android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-        android:animateLayoutChanges="true">
+              android:minHeight="?android:attr/listPreferredItemHeight">
 
     <LinearLayout
             android:orientation="vertical"
@@ -15,26 +12,29 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-        <TextView android:id="@android:id/text1"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_marginTop="8dip"
-                  tools:text="Primary"
-                  android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        <TextView
+                android:id="@android:id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dip"
+                tools:text="Primary"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
-        <TextView android:id="@android:id/text2"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  tools:text="Secondary"
-                  android:maxLines="3"
-                  android:ellipsize="end"
-                  android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        <TextView
+                android:id="@android:id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Secondary"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
 
     </LinearLayout>
 
     <view
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:background="?android:attr/selectableItemBackground"
             class="uk.co.amlcurran.githubstore.DownloadButton"
             android:id="@+id/button_download"/>
 

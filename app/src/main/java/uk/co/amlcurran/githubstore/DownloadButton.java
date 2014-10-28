@@ -1,18 +1,23 @@
 package uk.co.amlcurran.githubstore;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 public class DownloadButton extends FrameLayout {
 
-    private final ImageView button;
+    private final ImageView imageView;
     private final View progress;
+    private final int translation;
+    private final Interpolator interpolator;
     private Listener listener;
+    private State myState = State.IDLE;
 
     public DownloadButton(Context context) {
         this(context, null, 0);
@@ -29,22 +34,55 @@ public class DownloadButton extends FrameLayout {
     public DownloadButton(Context context, AttributeSet attrs, int defStyleAttr, int whatever) {
         super(context, attrs, defStyleAttr);
         LayoutInflater.from(context).inflate(R.layout.download_button, this);
-        button = ((ImageView) findViewById(R.id.download_button));
-        button.setOnClickListener(new StartDownloadListener());
+        imageView = ((ImageView) findViewById(R.id.download_button));
+        setOnClickListener(new StartDownloadListener());
         progress = findViewById(R.id.download_progress);
+        translation = getResources().getDimensionPixelOffset(R.dimen.button_translation);
+        interpolator = AnimationUtils.loadInterpolator(getContext(), getInterpolator());
     }
 
     public void setDownloading() {
-        button.setVisibility(GONE);
-        progress.setVisibility(VISIBLE);
+        if (myState != State.DOWNLOADING) {
+            myState = State.DOWNLOADING;
+            View view = imageView;
+            animateViewOut(view);
+            animateViewIn(progress);
+        }
+    }
+
+    private int getInterpolator() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return android.R.interpolator.fast_out_linear_in;
+        } else {
+            return android.R.interpolator.decelerate_cubic;
+        }
     }
 
     public void setDownloaded() {
-        button.setVisibility(VISIBLE);
-        button.setImageResource(R.drawable.ic_done_grey600_36dp);
-        button.setOnClickListener(new OpenApkListener());
-        progress.setVisibility(GONE);
-        button.setBackgroundColor(Color.GREEN);
+        if (myState != State.DOWNLOADED) {
+            myState = State.DOWNLOADED;
+            animateViewIn(imageView);
+            animateViewOut(progress);
+            imageView.setImageResource(R.drawable.ic_done_grey600_36dp);
+            setOnClickListener(new OpenApkListener());
+        }
+    }
+
+    private void animateViewIn(View view) {
+        view.setTranslationX(translation);
+        view.animate()
+                .translationX(0)
+                .alpha(1f)
+                .withStartAction(new VisibilityVisibile(view));
+    }
+
+    private void animateViewOut(View view) {
+        view.setTranslationX(0);
+        view.animate()
+                .setInterpolator(interpolator)
+                .translationX(-translation)
+                .alpha(0f)
+                .withEndAction(new VisibilityGone(view));
     }
 
     public void setListener(Listener listener) {
@@ -73,6 +111,37 @@ public class DownloadButton extends FrameLayout {
             if (listener != null) {
                 listener.openApk();
             }
+        }
+    }
+
+    private enum State {
+        IDLE, DOWNLOADED, DOWNLOADING
+
+    }
+
+    private class VisibilityGone implements Runnable {
+        private final View view;
+
+        public VisibilityGone(View view) {
+            this.view = view;
+        }
+
+        @Override
+        public void run() {
+            view.setVisibility(GONE);
+        }
+    }
+
+    private class VisibilityVisibile implements Runnable {
+        private final View view;
+
+        public VisibilityVisibile(View view) {
+            this.view = view;
+        }
+
+        @Override
+        public void run() {
+            view.setVisibility(VISIBLE);
         }
     }
 }
