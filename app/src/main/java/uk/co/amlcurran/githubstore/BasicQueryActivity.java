@@ -57,7 +57,8 @@ public class BasicQueryActivity extends ActionBarActivity {
         Toaster toaster = new SimpleToaster(this);
         Installer installer = new AndroidInstaller(this, releaseInfoRepository);
         ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi, downloader, toaster, installer);
-        transitionManager.push(new ProjectInformationViewController(new BasicProjectItem("Droidcon UK"), releaseListViewController));
+        BasicProjectItem basicProjectItem = new BasicProjectItem("Droidcon UK", "funkyandroid", "iosched");
+        transitionManager.push(new ProjectInformationViewController(githubApi, basicProjectItem, releaseListViewController));
     }
 
     private class ToastErrorListener implements GithubApi.ErrorListener {

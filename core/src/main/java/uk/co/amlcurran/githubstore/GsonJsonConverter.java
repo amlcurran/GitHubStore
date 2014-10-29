@@ -14,12 +14,17 @@ public class GsonJsonConverter implements JsonConverter {
 
     private static final String APK_CONTENT_TYPE = "application/vnd.android.package-archive";
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    private final JsonParser jsonParser;
+
+    public GsonJsonConverter() {
+        jsonParser = new JsonParser();
+    }
 
     @Override
     public List<Release> convertReleases(String json) {
         List<Release> releases = new ArrayList<Release>();
 
-        JsonArray releasesArray = new JsonParser().parse(json).getAsJsonArray();
+        JsonArray releasesArray = jsonParser.parse(json).getAsJsonArray();
         int size = releasesArray.size();
         for (int i = 0; i < size; i++) {
             JsonObject releaseJsonObject = releasesArray.get(i).getAsJsonObject();
@@ -31,6 +36,15 @@ public class GsonJsonConverter implements JsonConverter {
         }
 
         return releases;
+    }
+
+    @Override
+    public Project convertProject(String json) {
+        JsonObject projectObject = jsonParser.parse(json).getAsJsonObject();
+        String projectName = projectObject.get("name").getAsString();
+        String ownerName = projectObject.get("owner").getAsJsonObject().get("login").getAsString();
+        String description = projectObject.get("description").getAsString();
+        return new Project(projectName, ownerName, description);
     }
 
     private static List<ApkAsset> createApkAssets(JsonArray assetsArray) {

@@ -15,4 +15,12 @@ public class ProjectInformationView {
     public void updateProjectTitle(String title) {
         titleText.setText(title);
     }
+
+    public void updateOwner(String ownerName) {
+
+    }
+
+    public void updateDescription(String description) {
+
+    }
 }

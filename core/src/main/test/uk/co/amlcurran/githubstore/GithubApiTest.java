@@ -64,5 +64,10 @@ public class GithubApiTest {
             return null;
         }
 
+        @Override
+        public Project convertProject(String json) {
+            return null;
+        }
+
     }
 }

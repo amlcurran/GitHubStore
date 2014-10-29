@@ -8,6 +8,7 @@ public class GithubApi {
     private final HttpClient httpClient;
     private final JsonConverter jsonConverter;
     private final ErrorListener errorListener;
+    private final UrlBuilder urlBuilder = new UrlBuilder();
 
     public GithubApi(HttpClient httpClient, JsonConverter jsonConverter, ErrorListener errorListener) {
         this.httpClient = httpClient;
@@ -16,12 +17,27 @@ public class GithubApi {
     }
 
     public AsyncTask getReleases(final ResultListener<List<Release>> releaseListener) {
-        return httpClient.get(GithubUrls.RELEASES_URL, new HttpClient.HttpClientListener<String>() {
+        return httpClient.get(urlBuilder.getReleasesUrl(), new HttpClient.HttpClientListener<String>() {
             @Override
             public void success(String result) {
                 List<Release> releases = jsonConverter.convertReleases(result);
                 Collections.sort(releases, new RecentFirstComparator());
                 releaseListener.received(releases);
+            }
+
+            @Override
+            public void failure(Exception exception) {
+                errorListener.apiError(exception);
+            }
+        });
+    }
+
+    public AsyncTask getProject(BasicProjectItem basicProjectItem, final ResultListener<Project> resultListener) {
+        return httpClient.get(urlBuilder.projectUrl(basicProjectItem), new HttpClient.HttpClientListener<String>() {
+            @Override
+            public void success(String result) {
+                Project projectResult = jsonConverter.convertProject(result);
+                resultListener.received(projectResult);
             }
 
             @Override
