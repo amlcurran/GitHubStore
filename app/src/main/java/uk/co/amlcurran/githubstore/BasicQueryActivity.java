@@ -56,7 +56,7 @@ public class BasicQueryActivity extends ActionBarActivity {
         Downloader downloader = new DownloadServiceDownloader((DownloadManager) getSystemService(DOWNLOAD_SERVICE), releaseInfoRepository);
         Toaster toaster = new SimpleToaster(this);
         Installer installer = new AndroidInstaller(this, releaseInfoRepository);
-        BasicProjectItem basicProjectItem = new BasicProjectItem("amlcurran", "Messages");
+        BasicProjectItem basicProjectItem = new BasicProjectItem("funkyandroid", "iosched");
         ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi, basicProjectItem, downloader, toaster, installer);
         transitionManager.push(new ProjectInformationViewController(githubApi, basicProjectItem, releaseListViewController));
     }
