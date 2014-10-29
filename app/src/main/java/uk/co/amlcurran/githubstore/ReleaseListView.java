@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,18 +62,26 @@ public class ReleaseListView {
 
     private class ReleaseAdapter extends RecyclerView.Adapter<ReleaseViewHolder> {
 
+        private static final int ITEM_LATEST = 0;
+        private static final int ITEM_OTHER = 1;
+
         @Override
-        public ReleaseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_release, viewGroup, false);
+        public ReleaseViewHolder onCreateViewHolder(ViewGroup viewGroup, int itemViewType) {
+            View view;
+            if (itemViewType == ITEM_LATEST) {
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_release_latest, viewGroup, false);
+            } else {
+                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_release, viewGroup, false);
+            }
             return new ReleaseViewHolder(view, listener);
         }
 
         @Override
-        public void onBindViewHolder(ReleaseViewHolder releaseViewHolder, int i) {
-            Release release = releaseList.get(i);
+        public void onBindViewHolder(ReleaseViewHolder releaseViewHolder, int position) {
+            Release release = releaseList.get(position);
             releaseViewHolder.release = release;
             releaseViewHolder.tagText.setText(formatTitle(release));
-            if (i == 0) {
+            if (position == 0) {
                 releaseViewHolder.bodyText.setText(formatDescriptionAsFirst(release));
             } else {
                 releaseViewHolder.bodyText.setText(formatDescription(release));
@@ -93,18 +100,6 @@ public class ReleaseListView {
                     .popSpan()
                     .append(" - ")
                     .append(formatDescription(release));
-            return truss.build();
-        }
-
-        private CharSequence formatTitleAsLatest(Release release) {
-            Truss truss = new Truss();
-            truss.append(formatTitle(release))
-                    .append(" ")
-                    .pushSpan(new ForegroundColorSpan(resources.getColor(R.color.app_colour)))
-                    .pushSpan(new RelativeSizeSpan(0.6f))
-                    .append(resources.getString(R.string.latest))
-                    .popSpan()
-                    .popSpan();
             return truss.build();
         }
 
@@ -129,6 +124,11 @@ public class ReleaseListView {
 
         private boolean isDownloading(Release release) {
             return downloadingItems.contains(release);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return position == 0 ? ITEM_LATEST : ITEM_OTHER;
         }
 
         @Override
