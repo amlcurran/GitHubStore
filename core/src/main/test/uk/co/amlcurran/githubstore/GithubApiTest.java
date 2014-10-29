@@ -24,14 +24,14 @@ public class GithubApiTest {
 
     @Test
     public void whenGetReleasesIsCalled_TheHttpClientIsQueriedWithTheCorrectUrl() {
-        githubApi.getReleases(new NoOperationResultListener());
+        githubApi.getReleases(null, new NoOperationResultListener());
 
-        assertThat(fakeHttpClient.get_param, is(GithubUrls.RELEASES_URL));
+        assertThat(fakeHttpClient.get_param, is(UrlBuilder.RELEASES_URL));
     }
 
     @Test
     public void whenTheReleasesResponseReturns_TheJsonConverterReceivesTheResult() {
-        githubApi.getReleases(new NoOperationResultListener());
+        githubApi.getReleases(null, new NoOperationResultListener());
 
         assertThat(fakeJsonConverter.convert_param, is(FakeHttpClient.GET_RETURN_VALUE));
     }

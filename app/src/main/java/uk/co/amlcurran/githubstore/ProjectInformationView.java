@@ -4,12 +4,12 @@ import android.view.View;
 import android.widget.TextView;
 
 public class ProjectInformationView {
-    private final View view;
     private final TextView titleText;
+    private final TextView descriptionText;
 
     public ProjectInformationView(View view) {
-        this.view = view;
         titleText = (TextView) view.findViewById(R.id.project_title);
+        descriptionText = ((TextView) view.findViewById(R.id.project_description));
     }
 
     public void updateProjectTitle(String title) {
@@ -21,6 +21,6 @@ public class ProjectInformationView {
     }
 
     public void updateDescription(String description) {
-
+        descriptionText.setText(description);
     }
 }

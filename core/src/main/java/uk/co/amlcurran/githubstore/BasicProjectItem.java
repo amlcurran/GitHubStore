@@ -1,12 +1,10 @@
 package uk.co.amlcurran.githubstore;
 
 public class BasicProjectItem {
-    private String title;
     private final String user;
     private final String projectName;
 
-    public BasicProjectItem(String title, String user, String projectName) {
-        this.title = title;
+    public BasicProjectItem(String user, String projectName) {
         this.user = user;
         this.projectName = projectName;
     }
@@ -19,7 +17,4 @@ public class BasicProjectItem {
         return projectName;
     }
 
-    public String getTitle() {
-        return title;
-    }
 }

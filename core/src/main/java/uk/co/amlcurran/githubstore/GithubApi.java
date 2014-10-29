@@ -1,6 +1,5 @@
 package uk.co.amlcurran.githubstore;
 
-import java.util.Collections;
 import java.util.List;
 
 public class GithubApi {
@@ -16,12 +15,11 @@ public class GithubApi {
         this.errorListener = errorListener;
     }
 
-    public AsyncTask getReleases(final ResultListener<List<Release>> releaseListener) {
-        return httpClient.get(urlBuilder.getReleasesUrl(), new HttpClient.HttpClientListener<String>() {
+    public AsyncTask getReleases(BasicProjectItem basicProjectItem, final ResultListener<List<Release>> releaseListener) {
+        return httpClient.get(urlBuilder.getReleasesUrl(basicProjectItem), new HttpClient.HttpClientListener<String>() {
             @Override
             public void success(String result) {
                 List<Release> releases = jsonConverter.convertReleases(result);
-                Collections.sort(releases, new RecentFirstComparator());
                 releaseListener.received(releases);
             }
 

@@ -8,14 +8,22 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="Droidcon UK"
+            tools:text="Project title"
             android:id="@+id/project_title"
             style="@style/Base.TextAppearance.AppCompat.Display1"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="8dp"
+            tools:text="Here's some descriptive text about the project."
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/project_description"
+            style="@style/Base.TextAppearance.AppCompat.Body1"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/releases"
             android:textAllCaps="true"
             style="@style/Base.TextAppearance.AppCompat.Caption"/>

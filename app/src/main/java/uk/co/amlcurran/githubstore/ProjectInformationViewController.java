@@ -32,7 +32,6 @@ public class ProjectInformationViewController implements ViewController {
     @Override
     public void start() {
         releaseListViewController.start();
-        projectInformationView.updateProjectTitle(basicProjectItem.getTitle());
         getProject = githubApi.getProject(basicProjectItem, new GithubApi.ResultListener<Project>() {
 
             @Override
