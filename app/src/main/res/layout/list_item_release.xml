@@ -10,6 +10,7 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1">
 
         <TextView
@@ -18,7 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dip"
                 tools:text="Primary"
-                android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
 
         <TextView
                 android:id="@android:id/text2"
@@ -27,7 +28,7 @@
                 tools:text="Secondary"
                 android:maxLines="3"
                 android:ellipsize="end"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"/>
 
     </LinearLayout>
 

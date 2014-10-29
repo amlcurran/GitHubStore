@@ -73,17 +73,27 @@ public class ReleaseListView {
         public void onBindViewHolder(ReleaseViewHolder releaseViewHolder, int i) {
             Release release = releaseList.get(i);
             releaseViewHolder.release = release;
+            releaseViewHolder.tagText.setText(formatTitle(release));
             if (i == 0) {
-                releaseViewHolder.tagText.setText(formatTitleAsLatest(release));
+                releaseViewHolder.bodyText.setText(formatDescriptionAsFirst(release));
             } else {
-                releaseViewHolder.tagText.setText(formatTitle(release));
+                releaseViewHolder.bodyText.setText(formatDescription(release));
             }
-            releaseViewHolder.bodyText.setText(formatDescription(release));
             if (isDownloading(release)) {
                 releaseViewHolder.downloadButton.setDownloading();
             } else if (isDownloaded(release)) {
                 releaseViewHolder.downloadButton.setDownloaded();
             }
+        }
+
+        private CharSequence formatDescriptionAsFirst(Release release) {
+            Truss truss = new Truss();
+            truss.pushSpan(new ForegroundColorSpan(resources.getColor(R.color.app_colour)))
+                    .append(resources.getString(R.string.latest))
+                    .popSpan()
+                    .append(" - ")
+                    .append(formatDescription(release));
+            return truss.build();
         }
 
         private CharSequence formatTitleAsLatest(Release release) {

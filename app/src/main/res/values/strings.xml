@@ -9,5 +9,6 @@
     <string name="no_body">No description</string>
     <string name="search">Search</string>
     <string name="latest">Latest</string>
+    <string name="releases">Releases</string>
 
 </resources>
