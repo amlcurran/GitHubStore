@@ -1,5 +1,6 @@
 package uk.co.amlcurran.githubstore;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GithubApi {
@@ -20,6 +21,7 @@ public class GithubApi {
             @Override
             public void success(String result) {
                 List<Release> releases = jsonConverter.convertReleases(result);
+                Collections.sort(releases, new RecentFirstComparator());
                 releaseListener.received(releases);
             }
 
