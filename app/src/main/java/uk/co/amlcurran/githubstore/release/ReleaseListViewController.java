@@ -59,6 +59,14 @@ public class ReleaseListViewController implements ViewController {
         getReleases = api.getReleases(project, new GithubApi.ResultListener<ReleaseCollection>() {
             @Override
             public void received(ReleaseCollection result) {
+                if (result.hasARelease()) {
+                    releaseListView.showLatestRelease(result.getLatestRelease());
+                    if (result.hasLegacyReleases()) {
+                        releaseListView.showLegacyReleases(result.getLegacyReleases());
+                    } else {
+                        releaseListView.hideLegacyReleases();
+                    }
+                }
                 releaseListView.setReleases(result);
             }
         });

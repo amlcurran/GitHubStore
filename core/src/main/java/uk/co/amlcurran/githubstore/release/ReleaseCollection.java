@@ -36,4 +36,8 @@ public class ReleaseCollection {
     public List<Release> getAll() {
         return releases;
     }
+
+    public boolean hasLegacyReleases() {
+        return legacyReleases.size() > 0;
+    }
 }

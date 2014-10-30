@@ -24,24 +24,27 @@ public class ReleaseListView {
     private final TextView latestVersionText;
     private final DownloadButton latestDownloadButton;
     private final Resources resources;
+    private final RecyclerView legacyReleasesListView;
+    private final TextSwitcher legacyToggle;
 
     public ReleaseListView(View view, Listener listener, Resources resources) {
         this.resources = resources;
         releasesAdapter = new LegacyReleaseAdapter(listener, resources);
-        RecyclerView releasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
-        releasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        releasesListView.setAdapter(releasesAdapter);
-        releasesListView.setVisibility(View.GONE);
+        legacyReleasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
+        legacyReleasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        legacyReleasesListView.setAdapter(releasesAdapter);
+        legacyReleasesListView.setVisibility(View.GONE);
         latestVersionText = ((TextView) view.findViewById(R.id.releases_latest_version));
         latestDownloadButton = ((DownloadButton) view.findViewById(R.id.releases_latest_version_dl));
         latestDownloadButton.setListener(new LatestDownloadButtonListener(listener));
 
-        TextSwitcher legacyToggle = ((TextSwitcher) view.findViewById(R.id.release_toggle_legacy));
+        legacyToggle = ((TextSwitcher) view.findViewById(R.id.release_toggle_legacy));
         legacyToggle.setFactory(new ToggleLegacyViewFactory(view.getContext(), legacyToggle));
         legacyToggle.setText(resources.getString(R.string.show_old_versions));
-        legacyToggle.setOnClickListener(new ToggleLegacyListener(releasesListView, legacyToggle, resources));
+        legacyToggle.setOnClickListener(new ToggleLegacyListener(legacyReleasesListView, legacyToggle, resources));
         legacyToggle.setInAnimation(new AlphaAnimation(0, 1));
         legacyToggle.setOutAnimation(new AlphaAnimation(1, 0));
+        legacyToggle.setVisibility(View.GONE);
     }
 
     public void downloadingAsset(Release release, int apkIndex) {
@@ -68,14 +71,19 @@ public class ReleaseListView {
     public void setReleases(ReleaseCollection result) {
         releaseList.clear();
         releaseList.addAll(result.getAll());
-        releasesAdapter.setLegacyReleases(result.getLegacyReleases());
-        if (result.hasARelease()) {
-            showLatestRelease(result.getLatestRelease());
-        }
     }
 
-    private void showLatestRelease(Release latestRelease) {
+    public void showLatestRelease(Release latestRelease) {
         latestVersionText.setText(formatTitle(latestRelease));
+    }
+
+    public void showLegacyReleases(List<Release> legacyReleases) {
+        releasesAdapter.setLegacyReleases(legacyReleases);
+        legacyToggle.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLegacyReleases() {
+        legacyToggle.setVisibility(View.GONE);
     }
 
     public interface Listener {
