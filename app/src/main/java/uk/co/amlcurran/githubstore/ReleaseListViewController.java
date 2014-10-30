@@ -4,11 +4,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 import uk.co.amlcurran.githubstore.release.Downloader;
 import uk.co.amlcurran.githubstore.release.Installer;
 import uk.co.amlcurran.githubstore.release.Release;
+import uk.co.amlcurran.githubstore.release.ReleaseCollection;
 import uk.co.amlcurran.viewcontroller.ViewController;
 
 public class ReleaseListViewController implements ViewController {
@@ -56,11 +55,10 @@ public class ReleaseListViewController implements ViewController {
 
     public void loadReleases(Project project) {
         stopLoadingReleases();
-        getReleases = api.getReleases(project, new GithubApi.ResultListener<List<Release>>() {
+        getReleases = api.getReleases(project, new GithubApi.ResultListener<ReleaseCollection>() {
             @Override
-            public void received(List<Release> result) {
-                releaseListView.removeAllReleases();
-                releaseListView.addReleases(result);
+            public void received(ReleaseCollection result) {
+                releaseListView.setReleases(result);
             }
         });
     }

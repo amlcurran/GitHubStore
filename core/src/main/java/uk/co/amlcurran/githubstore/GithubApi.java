@@ -5,6 +5,7 @@ import java.util.List;
 
 import uk.co.amlcurran.githubstore.release.RecentFirstComparator;
 import uk.co.amlcurran.githubstore.release.Release;
+import uk.co.amlcurran.githubstore.release.ReleaseCollection;
 
 public class GithubApi {
 
@@ -19,29 +20,13 @@ public class GithubApi {
         this.errorListener = errorListener;
     }
 
-    public AsyncTask getReleases(BasicProjectItem basicProjectItem, final ResultListener<List<Release>> releaseListener) {
-        return httpClient.get(urlBuilder.getReleasesUrl(basicProjectItem), new HttpClient.HttpClientListener<String>() {
-            @Override
-            public void success(String result) {
-                List<Release> releases = jsonConverter.convertReleases(result);
-                Collections.sort(releases, new RecentFirstComparator());
-                releaseListener.received(releases);
-            }
-
-            @Override
-            public void failure(Exception exception) {
-                errorListener.apiError(exception);
-            }
-        });
-    }
-
-    public AsyncTask getReleases(Project project, final ResultListener<List<Release>> releaseListener) {
+    public AsyncTask getReleases(Project project, final ResultListener<ReleaseCollection> releaseListener) {
         return httpClient.get(project.getReleasesUrl(), new HttpClient.HttpClientListener<String>() {
             @Override
             public void success(String result) {
                 List<Release> releases = jsonConverter.convertReleases(result);
                 Collections.sort(releases, new RecentFirstComparator());
-                releaseListener.received(releases);
+                releaseListener.received(new ReleaseCollection(releases));
             }
 
             @Override

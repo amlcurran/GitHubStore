@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.amlcurran.githubstore.release.Release;
+import uk.co.amlcurran.githubstore.release.ReleaseCollection;
 
 public class ReleaseListView {
     private final ReleaseAdapter releasesAdapter;
@@ -32,13 +33,13 @@ public class ReleaseListView {
         releasesListView.setAdapter(releasesAdapter);
     }
 
-    public void removeAllReleases() {
+    private void removeAllReleases() {
         int removedNumber = releaseList.size();
         releaseList.clear();
         releasesAdapter.notifyItemRangeRemoved(0, removedNumber);
     }
 
-    public void addReleases(List<Release> result) {
+    private void addReleases(List<Release> result) {
         releaseList.addAll(result);
         releasesAdapter.notifyItemRangeInserted(0, result.size());
     }
@@ -54,6 +55,11 @@ public class ReleaseListView {
         downloadedItems.add(release);
         downloadingItems.remove(release);
         releasesAdapter.notifyItemChanged(index);
+    }
+
+    public void setReleases(ReleaseCollection result) {
+        removeAllReleases();
+        addReleases(result.getAll());
     }
 
     public interface Listener {
