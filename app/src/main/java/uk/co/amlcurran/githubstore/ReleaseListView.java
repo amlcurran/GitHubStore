@@ -4,7 +4,6 @@ import android.content.res.Resources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import uk.co.amlcurran.githubstore.release.Release;
 import uk.co.amlcurran.githubstore.release.ReleaseCollection;
 
 public class ReleaseListView {
-    private final ReleaseAdapter releasesAdapter;
+    private final LegacyReleaseAdapter releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();
     private final List<Release> downloadedItems = new ArrayList<Release>();
     private final List<Release> downloadingItems = new ArrayList<Release>();
@@ -28,40 +27,34 @@ public class ReleaseListView {
     public ReleaseListView(View view, Listener listener, Resources resources) {
         this.listener = listener;
         this.resources = resources;
-        releasesAdapter = new ReleaseAdapter();
+        releasesAdapter = new LegacyReleaseAdapter(listener, resources);
         RecyclerView releasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
         releasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         releasesListView.setAdapter(releasesAdapter);
         latestVersionText = ((TextView) view.findViewById(R.id.releases_latest_version));
     }
 
-    private void removeAllReleases() {
-        int removedNumber = releaseList.size();
-        releaseList.clear();
-        releasesAdapter.notifyItemRangeRemoved(0, removedNumber);
-    }
-
-    private void addReleases(List<Release> result) {
-        releaseList.addAll(result);
-        releasesAdapter.notifyItemRangeInserted(0, result.size());
-    }
-
     public void downloadingAsset(Release release, int apkIndex) {
         int index = releaseList.indexOf(release);
         downloadingItems.add(release);
-        releasesAdapter.notifyItemChanged(index);
+        if (index > 0) {
+            releasesAdapter.notifyItemChanged(index - 1);
+        }
     }
 
     public void downloadedAsset(Release release, int apkIndex) {
         int index = releaseList.indexOf(release);
         downloadedItems.add(release);
         downloadingItems.remove(release);
-        releasesAdapter.notifyItemChanged(index);
+        if (index > 0) {
+            releasesAdapter.notifyItemChanged(index - 1);
+        }
     }
 
     public void setReleases(ReleaseCollection result) {
-        removeAllReleases();
-        addReleases(result.getAll());
+        releaseList.clear();
+        releaseList.addAll(result.getAll());
+        releasesAdapter.setLegacyReleases(result.getLegacyReleases());
         if (result.hasARelease()) {
             showLatestRelease(result.getLatestRelease());
         }
@@ -85,47 +78,42 @@ public class ReleaseListView {
         }
     }
 
-    private class ReleaseAdapter extends RecyclerView.Adapter<ReleaseViewHolder> {
+    private class LegacyReleaseAdapter extends RecyclerView.Adapter<ReleaseViewHolder> {
 
-        private static final int ITEM_LATEST = 0;
-        private static final int ITEM_OTHER = 1;
+        private final Listener listener;
+        private final Resources resources;
+        private final List<Release> legacyReleases = new ArrayList<Release>();
+
+        public LegacyReleaseAdapter(Listener listener, Resources resources) {
+            this.listener = listener;
+            this.resources = resources;
+        }
+
+        public void setLegacyReleases(List<Release> releases) {
+            int oldSize = legacyReleases.size();
+            legacyReleases.clear();
+            notifyItemRangeRemoved(0, oldSize);
+            legacyReleases.addAll(releases);
+            notifyItemRangeInserted(0, releases.size());
+        }
 
         @Override
         public ReleaseViewHolder onCreateViewHolder(ViewGroup viewGroup, int itemViewType) {
-            View view;
-            if (itemViewType == ITEM_LATEST) {
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_release_latest, viewGroup, false);
-            } else {
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_release, viewGroup, false);
-            }
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_release, viewGroup, false);
             return new ReleaseViewHolder(view, listener);
         }
 
         @Override
         public void onBindViewHolder(ReleaseViewHolder releaseViewHolder, int position) {
-            Release release = releaseList.get(position);
+            Release release = legacyReleases.get(position);
             releaseViewHolder.release = release;
             releaseViewHolder.tagText.setText(formatTitle(release));
-            if (position == 0) {
-                releaseViewHolder.bodyText.setText(formatDescriptionAsFirst(release));
-            } else {
-                releaseViewHolder.bodyText.setText(formatDescription(release));
-            }
+            releaseViewHolder.bodyText.setText(formatDescription(release));
             if (isDownloading(release)) {
                 releaseViewHolder.downloadButton.setDownloading();
             } else if (isDownloaded(release)) {
                 releaseViewHolder.downloadButton.setDownloaded();
             }
-        }
-
-        private CharSequence formatDescriptionAsFirst(Release release) {
-            Truss truss = new Truss();
-            truss.pushSpan(new ForegroundColorSpan(resources.getColor(R.color.app_colour)))
-                    .append(resources.getString(R.string.latest))
-                    .popSpan()
-                    .append(" - ")
-                    .append(formatDescription(release));
-            return truss.build();
         }
 
         private String formatDescription(Release release) {
@@ -144,13 +132,8 @@ public class ReleaseListView {
         }
 
         @Override
-        public int getItemViewType(int position) {
-            return position == 0 ? ITEM_LATEST : ITEM_OTHER;
-        }
-
-        @Override
         public int getItemCount() {
-            return releaseList.size();
+            return legacyReleases.size();
         }
 
     }
