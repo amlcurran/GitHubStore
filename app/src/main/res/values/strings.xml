@@ -11,5 +11,6 @@
     <string name="latest">Latest</string>
     <string name="releases">Releases</string>
     <string name="check_gs_updates">Check GS updates</string>
+    <string name="latest_release">Latest release</string>
 
 </resources>

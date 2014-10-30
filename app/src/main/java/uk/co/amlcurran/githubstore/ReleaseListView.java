@@ -23,6 +23,7 @@ public class ReleaseListView {
     private final List<Release> downloadingItems = new ArrayList<Release>();
     private final Listener listener;
     private final Resources resources;
+    private final TextView latestVersionText;
 
     public ReleaseListView(View view, Listener listener, Resources resources) {
         this.listener = listener;
@@ -31,6 +32,7 @@ public class ReleaseListView {
         RecyclerView releasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
         releasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         releasesListView.setAdapter(releasesAdapter);
+        latestVersionText = ((TextView) view.findViewById(R.id.releases_latest_version));
     }
 
     private void removeAllReleases() {
@@ -60,12 +62,27 @@ public class ReleaseListView {
     public void setReleases(ReleaseCollection result) {
         removeAllReleases();
         addReleases(result.getAll());
+        if (result.hasARelease()) {
+            showLatestRelease(result.getLatestRelease());
+        }
+    }
+
+    private void showLatestRelease(Release latestRelease) {
+        latestVersionText.setText(formatTitle(latestRelease));
     }
 
     public interface Listener {
         void downloadRelease(Release release);
 
         void openApk(Release release);
+    }
+
+    private CharSequence formatTitle(Release release) {
+        if (TextUtils.isEmpty(release.getReleaseName())) {
+            return release.getTagName();
+        } else {
+            return release.getReleaseName();
+        }
     }
 
     private class ReleaseAdapter extends RecyclerView.Adapter<ReleaseViewHolder> {
@@ -116,14 +133,6 @@ public class ReleaseListView {
                 return resources.getString(R.string.no_body);
             }
             return release.getBody();
-        }
-
-        private CharSequence formatTitle(Release release) {
-            if (TextUtils.isEmpty(release.getReleaseName())) {
-                return release.getTagName();
-            } else {
-                return release.getReleaseName();
-            }
         }
 
         private boolean isDownloaded(Release release) {

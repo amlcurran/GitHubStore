@@ -12,4 +12,12 @@ public class ReleaseCollection {
     public List<Release> getAll() {
         return releases;
     }
+
+    public boolean hasARelease() {
+        return releases.size() > 0;
+    }
+
+    public Release getLatestRelease() {
+        return releases.get(0);
+    }
 }
