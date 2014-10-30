@@ -1,8 +1,13 @@
 package uk.co.amlcurran.viewcontroller;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.LayoutTransition;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 public class TransitionManager {
@@ -17,6 +22,37 @@ public class TransitionManager {
     public TransitionManager(Activity activity, ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
         this.layoutInflater = LayoutInflater.from(activity);
+        setupLayoutAnimations(activity);
+    }
+
+    private void setupLayoutAnimations(Activity activity) {
+        LayoutTransition transition = new LayoutTransition();
+        transition.setAnimator(LayoutTransition.APPEARING, getInAnimator());
+        transition.setInterpolator(LayoutTransition.APPEARING, AnimateUtils.getInterpolator(activity));
+        transition.setStartDelay(LayoutTransition.APPEARING, 0);
+        transition.addTransitionListener(new LayoutTransition.TransitionListener() {
+            @Override
+            public void startTransition(LayoutTransition transition, ViewGroup container, View view, int transitionType) {
+                if (transitionType == LayoutTransition.APPEARING) {
+                    view.setAlpha(0f);
+                }
+            }
+
+            @Override
+            public void endTransition(LayoutTransition transition, ViewGroup container, View view, int transitionType) {
+
+            }
+        });
+        viewGroup.setLayoutTransition(transition);
+    }
+
+    private Animator getInAnimator() {
+        AnimatorSet set = new AnimatorSet();
+        Animator alpha = ObjectAnimator.ofFloat(null, "alpha", 0, 1);
+        Animator translationX = ObjectAnimator.ofFloat(null, "translationX", 100, 0);
+        set.playTogether(alpha, translationX);
+        set.setDuration(100);
+        return set;
     }
 
     public void push(@NonNull ViewController viewController) {

@@ -1,22 +1,21 @@
 package uk.co.amlcurran.githubstore;
 
+import android.animation.TimeInterpolator;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
+import uk.co.amlcurran.viewcontroller.AnimateUtils;
 
 public class DownloadButton extends FrameLayout {
 
     private static final int ROTATION_DEGREES = 360;
     private final ImageView imageView;
     private final View progress;
-    private final int translation;
-    private final Interpolator interpolator;
+    private final TimeInterpolator interpolator;
     private final int animationDuration;
     private Listener listener;
     private State myState = State.IDLE;
@@ -39,8 +38,7 @@ public class DownloadButton extends FrameLayout {
         imageView = ((ImageView) findViewById(R.id.download_button));
         setOnClickListener(new StartDownloadListener());
         progress = findViewById(R.id.download_progress);
-        translation = getResources().getDimensionPixelOffset(R.dimen.button_translation);
-        interpolator = AnimationUtils.loadInterpolator(getContext(), getInterpolator());
+        interpolator = AnimateUtils.getInterpolator(context);
         animationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
     }
 
@@ -63,14 +61,6 @@ public class DownloadButton extends FrameLayout {
                 .scaleY(scaleEnd)
                 .alpha(0f)
                 .withEndAction(new VisibilityGone(view));
-    }
-
-    private int getInterpolator() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return android.R.interpolator.fast_out_linear_in;
-        } else {
-            return android.R.interpolator.decelerate_cubic;
-        }
     }
 
     public void setDownloaded() {

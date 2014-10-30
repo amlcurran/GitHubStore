@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.Volley;
 
@@ -37,7 +36,7 @@ public class BasicQueryActivity extends ActionBarActivity {
         downloader = new DownloadServiceDownloader((DownloadManager) getSystemService(DOWNLOAD_SERVICE), releaseInfoRepository);
         installer = new AndroidInstaller(this, releaseInfoRepository);
         githubApi = new GithubApi(new VolleyClient(Volley.newRequestQueue(BasicQueryActivity.this)), new GsonJsonConverter(), new ViewControllerErrorListener());
-        transitionManager = new TransitionManager(BasicQueryActivity.this, ((ViewGroup) findViewById(R.id.content)));
+        transitionManager = new TransitionManager(BasicQueryActivity.this, (ViewGroup) findViewById(R.id.content));
 
         showReleases(new BasicProjectItem("funkyandroid", "iosched"));
     }
@@ -75,13 +74,6 @@ public class BasicQueryActivity extends ActionBarActivity {
     private void showReleases(BasicProjectItem basicProjectItem) {
         ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi, downloader, toaster, installer);
         transitionManager.push(new ProjectInformationViewController(githubApi, basicProjectItem, releaseListViewController));
-    }
-
-    private class ToastErrorListener implements GithubApi.ErrorListener {
-        @Override
-        public void apiError(Exception errorException) {
-            Toast.makeText(BasicQueryActivity.this, errorException.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     private class ViewControllerErrorListener implements GithubApi.ErrorListener {
