@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import uk.co.amlcurran.githubstore.release.ReleaseListViewController;
 import uk.co.amlcurran.viewcontroller.ViewController;
 
 public class ProjectInformationViewController implements ViewController {

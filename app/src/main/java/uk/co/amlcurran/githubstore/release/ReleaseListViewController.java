@@ -1,13 +1,14 @@
-package uk.co.amlcurran.githubstore;
+package uk.co.amlcurran.githubstore.release;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import uk.co.amlcurran.githubstore.release.Downloader;
-import uk.co.amlcurran.githubstore.release.Installer;
-import uk.co.amlcurran.githubstore.release.Release;
-import uk.co.amlcurran.githubstore.release.ReleaseCollection;
+import uk.co.amlcurran.githubstore.AsyncTask;
+import uk.co.amlcurran.githubstore.GithubApi;
+import uk.co.amlcurran.githubstore.Project;
+import uk.co.amlcurran.githubstore.R;
+import uk.co.amlcurran.githubstore.Toaster;
 import uk.co.amlcurran.viewcontroller.ViewController;
 
 public class ReleaseListViewController implements ViewController {

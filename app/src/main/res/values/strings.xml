@@ -12,5 +12,7 @@
     <string name="releases">Releases</string>
     <string name="check_gs_updates">Check GS updates</string>
     <string name="latest_release">Latest release</string>
+    <string name="show_old_versions">Show old versions</string>
+    <string name="hide_old_versions">Hide old versions</string>
 
 </resources>

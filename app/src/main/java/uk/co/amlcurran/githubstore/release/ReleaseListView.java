@@ -1,4 +1,4 @@
-package uk.co.amlcurran.githubstore;
+package uk.co.amlcurran.githubstore.release;
 
 import android.content.res.Resources;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,34 +7,42 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.amlcurran.githubstore.release.Release;
-import uk.co.amlcurran.githubstore.release.ReleaseCollection;
+import uk.co.amlcurran.githubstore.DownloadButton;
+import uk.co.amlcurran.githubstore.R;
 
 public class ReleaseListView {
     private final LegacyReleaseAdapter releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();
     private final List<Release> downloadedItems = new ArrayList<Release>();
     private final List<Release> downloadingItems = new ArrayList<Release>();
-    private final Listener listener;
-    private final Resources resources;
     private final TextView latestVersionText;
     private final DownloadButton latestDownloadButton;
+    private final Resources resources;
 
     public ReleaseListView(View view, Listener listener, Resources resources) {
-        this.listener = listener;
         this.resources = resources;
         releasesAdapter = new LegacyReleaseAdapter(listener, resources);
         RecyclerView releasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
         releasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         releasesListView.setAdapter(releasesAdapter);
+        releasesListView.setVisibility(View.GONE);
         latestVersionText = ((TextView) view.findViewById(R.id.releases_latest_version));
         latestDownloadButton = ((DownloadButton) view.findViewById(R.id.releases_latest_version_dl));
-        latestDownloadButton.setListener(new LatestDownloadButtonListener());
+        latestDownloadButton.setListener(new LatestDownloadButtonListener(listener));
+
+        TextSwitcher legacyToggle = ((TextSwitcher) view.findViewById(R.id.release_toggle_legacy));
+        legacyToggle.setFactory(new ToggleLegacyViewFactory(view.getContext(), legacyToggle));
+        legacyToggle.setText(resources.getString(R.string.show_old_versions));
+        legacyToggle.setOnClickListener(new ToggleLegacyListener(releasesListView, legacyToggle, resources));
+        legacyToggle.setInAnimation(new AlphaAnimation(0, 1));
+        legacyToggle.setOutAnimation(new AlphaAnimation(1, 0));
     }
 
     public void downloadingAsset(Release release, int apkIndex) {
@@ -146,10 +154,10 @@ public class ReleaseListView {
     }
 
     private static class ReleaseViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tagText;
-        private final TextView bodyText;
-        private final DownloadButton downloadButton;
-        private Release release;
+        final TextView tagText;
+        final TextView bodyText;
+        final DownloadButton downloadButton;
+        Release release;
 
         public ReleaseViewHolder(View itemView, final Listener releaseSelectedListener) {
             super(itemView);
@@ -174,6 +182,12 @@ public class ReleaseListView {
 
     private class LatestDownloadButtonListener implements DownloadButton.Listener {
 
+        private final Listener listener;
+
+        public LatestDownloadButtonListener(Listener listener) {
+            this.listener = listener;
+        }
+
         @Override
         public void requestDownload() {
             listener.downloadRelease(releaseList.get(0));
@@ -185,4 +199,5 @@ public class ReleaseListView {
         }
 
     }
+
 }

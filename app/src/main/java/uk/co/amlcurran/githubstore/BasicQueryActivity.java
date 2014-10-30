@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 import uk.co.amlcurran.githubstore.release.Downloader;
 import uk.co.amlcurran.githubstore.release.Installer;
 import uk.co.amlcurran.githubstore.release.ReleaseInfoRepository;
+import uk.co.amlcurran.githubstore.release.ReleaseListViewController;
 import uk.co.amlcurran.viewcontroller.TransitionManager;
 
 

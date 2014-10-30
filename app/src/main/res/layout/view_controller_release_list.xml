@@ -3,7 +3,8 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
     <LinearLayout
             android:orientation="horizontal"
@@ -37,6 +38,11 @@
                 class="uk.co.amlcurran.githubstore.DownloadButton"
                 android:id="@+id/releases_latest_version_dl"/>
     </LinearLayout>
+
+    <TextSwitcher
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:id="@+id/release_toggle_legacy" />
 
     <view
             android:layout_width="match_parent"
