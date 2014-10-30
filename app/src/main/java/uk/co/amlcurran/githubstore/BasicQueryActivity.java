@@ -73,7 +73,7 @@ public class BasicQueryActivity extends ActionBarActivity {
     }
 
     private void showReleases(BasicProjectItem basicProjectItem) {
-        ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi, basicProjectItem, downloader, toaster, installer);
+        ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi, downloader, toaster, installer);
         transitionManager.push(new ProjectInformationViewController(githubApi, basicProjectItem, releaseListViewController));
     }
 

@@ -35,6 +35,22 @@ public class GithubApi {
         });
     }
 
+    public AsyncTask getReleases(Project project, final ResultListener<List<Release>> releaseListener) {
+        return httpClient.get(project.getReleasesUrl(), new HttpClient.HttpClientListener<String>() {
+            @Override
+            public void success(String result) {
+                List<Release> releases = jsonConverter.convertReleases(result);
+                Collections.sort(releases, new RecentFirstComparator());
+                releaseListener.received(releases);
+            }
+
+            @Override
+            public void failure(Exception exception) {
+                errorListener.apiError(exception);
+            }
+        });
+    }
+
     public AsyncTask getProject(BasicProjectItem basicProjectItem, final ResultListener<Project> resultListener) {
         return httpClient.get(urlBuilder.projectUrl(basicProjectItem), new HttpClient.HttpClientListener<String>() {
             @Override

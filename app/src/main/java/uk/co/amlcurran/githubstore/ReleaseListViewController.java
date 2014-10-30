@@ -14,16 +14,14 @@ import uk.co.amlcurran.viewcontroller.ViewController;
 public class ReleaseListViewController implements ViewController {
 
     private final GithubApi api;
-    private final BasicProjectItem basicProjectItem;
     private final Downloader downloader;
     private final Installer installer;
     private final Toaster toaster;
     private AsyncTask getReleases;
     private ReleaseListView releaseListView;
 
-    public ReleaseListViewController(GithubApi api, BasicProjectItem basicProjectItem, Downloader downloader, Toaster toaster, Installer installer) {
+    public ReleaseListViewController(GithubApi api, Downloader downloader, Toaster toaster, Installer installer) {
         this.api = api;
-        this.basicProjectItem = basicProjectItem;
         this.downloader = downloader;
         this.toaster = toaster;
         this.installer = installer;
@@ -38,20 +36,12 @@ public class ReleaseListViewController implements ViewController {
 
     @Override
     public void start() {
-        getReleases = api.getReleases(basicProjectItem, new GithubApi.ResultListener<List<Release>>() {
-            @Override
-            public void received(List<Release> result) {
-                releaseListView.removeAllReleases();
-                releaseListView.addReleases(result);
-            }
-        });
+
     }
 
     @Override
     public void stop() {
-        if (getReleases != null) {
-            getReleases.cancel();
-        }
+        stopLoadingReleases();
     }
 
     @Override
@@ -62,6 +52,23 @@ public class ReleaseListViewController implements ViewController {
     @Override
     public void popped() {
 
+    }
+
+    public void loadReleases(Project project) {
+        stopLoadingReleases();
+        getReleases = api.getReleases(project, new GithubApi.ResultListener<List<Release>>() {
+            @Override
+            public void received(List<Release> result) {
+                releaseListView.removeAllReleases();
+                releaseListView.addReleases(result);
+            }
+        });
+    }
+
+    private void stopLoadingReleases() {
+        if (getReleases != null) {
+            getReleases.cancel();
+        }
     }
 
     private ReleaseListView.Listener listener = new ReleaseListView.Listener() {

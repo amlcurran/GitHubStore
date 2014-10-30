@@ -47,7 +47,8 @@ public class GsonJsonConverter implements JsonConverter {
         String projectName = projectObject.get("name").getAsString();
         String ownerName = projectObject.get("owner").getAsJsonObject().get("login").getAsString();
         String description = projectObject.get("description").getAsString();
-        return new Project(projectName, ownerName, description);
+        String releaseUrl = projectObject.get("releases_url").getAsString().replace("{/id}", "");
+        return new Project(projectName, ownerName, description, releaseUrl);
     }
 
     private static List<ApkAsset> createApkAssets(JsonArray assetsArray) {

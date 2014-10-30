@@ -38,6 +38,7 @@ public class ProjectInformationViewController implements ViewController {
                 projectInformationView.updateProjectTitle(result.getProjectName());
                 projectInformationView.updateOwner(result.getOwnerName());
                 projectInformationView.updateDescription(result.getDescription());
+                releaseListViewController.loadReleases(result);
             }
 
         });

@@ -1,14 +1,20 @@
 package uk.co.amlcurran.githubstore;
 
 public class Project {
-    private String projectName;
-    private String ownerName;
-    private String description;
+    private final String projectName;
+    private final String ownerName;
+    private final String description;
+    private final String releasesUrl;
 
-    public Project(String projectName, String ownerName, String description) {
+    public Project(String projectName, String ownerName, String description, String releasesUrl) {
         this.projectName = projectName;
         this.ownerName = ownerName;
         this.description = description;
+        this.releasesUrl = releasesUrl;
+    }
+
+    public String getReleasesUrl() {
+        return releasesUrl;
     }
 
     public String getProjectName() {
