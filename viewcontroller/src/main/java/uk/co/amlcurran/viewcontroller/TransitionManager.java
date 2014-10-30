@@ -12,6 +12,7 @@ public class TransitionManager {
 
     @NonNull
     private ViewController currentViewController = ViewController.NONE;
+    private boolean hasStarted;
 
     public TransitionManager(Activity activity, ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
@@ -23,14 +24,19 @@ public class TransitionManager {
         viewGroup.removeAllViews();
         viewGroup.addView(viewController.inflateView(layoutInflater, viewGroup));
         viewController.pushed();
+        if (hasStarted) {
+            viewController.start();
+        }
         currentViewController = viewController;
     }
 
     public void start() {
+        hasStarted = true;
         currentViewController.start();
     }
 
     public void stop() {
+        hasStarted = false;
         currentViewController.stop();
     }
 }
