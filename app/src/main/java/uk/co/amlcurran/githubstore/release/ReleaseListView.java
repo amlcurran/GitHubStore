@@ -26,6 +26,7 @@ public class ReleaseListView {
     private final Resources resources;
     private final RecyclerView legacyReleasesListView;
     private final TextSwitcher legacyToggle;
+    private final View latestVersionChip;
 
     public ReleaseListView(View view, Listener listener, Resources resources) {
         this.resources = resources;
@@ -35,6 +36,8 @@ public class ReleaseListView {
         legacyReleasesListView.setAdapter(releasesAdapter);
         legacyReleasesListView.setVisibility(View.GONE);
         latestVersionText = ((TextView) view.findViewById(R.id.releases_latest_version));
+        latestVersionChip = view.findViewById(R.id.releases_latest_version_chip);
+        latestVersionChip.setVisibility(View.GONE);
         latestDownloadButton = ((DownloadButton) view.findViewById(R.id.releases_latest_version_dl));
         latestDownloadButton.setListener(new LatestDownloadButtonListener(listener));
 
@@ -75,6 +78,7 @@ public class ReleaseListView {
 
     public void showLatestRelease(Release latestRelease) {
         latestVersionText.setText(formatTitle(latestRelease));
+        latestVersionChip.setVisibility(View.VISIBLE);
     }
 
     public void showLegacyReleases(List<Release> legacyReleases) {

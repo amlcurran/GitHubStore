@@ -10,7 +10,15 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:gravity="center_vertical"
+            android:id="@+id/releases_latest_version_chip"
             android:layout_height="64dp">
+
+        <view
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                class="uk.co.amlcurran.githubstore.release.DownloadButton"
+                android:id="@+id/releases_latest_version_dl"/>
 
         <LinearLayout
                 android:orientation="vertical"
@@ -22,22 +30,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/latest_release"
-                    style="@style/Base.TextAppearance.AppCompat.Headline"
+                    style="@style/Base.TextAppearance.AppCompat.Caption"
                     android:textColor="@color/app_colour"
                     android:id="@+id/textView2"/>
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     tools:text="v1.0"
                     android:id="@+id/releases_latest_version"/>
         </LinearLayout>
 
-        <view
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                class="uk.co.amlcurran.githubstore.release.DownloadButton"
-                android:id="@+id/releases_latest_version_dl"/>
     </LinearLayout>
 
     <TextSwitcher

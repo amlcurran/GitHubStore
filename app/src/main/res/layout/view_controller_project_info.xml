@@ -7,7 +7,8 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               android:paddingBottom="@dimen/activity_vertical_margin"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
 
     <TextView
             android:layout_width="wrap_content"
@@ -17,13 +18,13 @@
             style="@style/Base.TextAppearance.AppCompat.Display1"/>
 
     <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Here's some descriptive text about the project."
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:id="@+id/project_description"
-            style="@style/Base.TextAppearance.AppCompat.Body1"/>
+            style="@style/Base.TextAppearance.AppCompat.Small"/>
 
     <FrameLayout
             android:layout_width="fill_parent"
