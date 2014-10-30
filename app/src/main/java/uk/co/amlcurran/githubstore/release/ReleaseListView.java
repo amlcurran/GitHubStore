@@ -16,7 +16,7 @@ import java.util.List;
 
 import uk.co.amlcurran.githubstore.R;
 
-public class ReleaseListView {
+class ReleaseListView {
     private final LegacyReleaseAdapter releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();
     private final List<Release> downloadedItems = new ArrayList<Release>();
@@ -27,6 +27,7 @@ public class ReleaseListView {
     private final RecyclerView legacyReleasesListView;
     private final TextSwitcher legacyToggle;
     private final View latestVersionChip;
+    private final TextView latestChanges;
 
     public ReleaseListView(View view, Listener listener, Resources resources) {
         this.resources = resources;
@@ -43,6 +44,7 @@ public class ReleaseListView {
 
         latestDownloadButton = ((DownloadButton) view.findViewById(R.id.releases_latest_version_dl));
         latestDownloadButton.setListener(new LatestDownloadButtonListener(listener));
+        latestChanges = ((TextView) view.findViewById(R.id.releases_latest_changes));
 
         legacyToggle = ((TextSwitcher) view.findViewById(R.id.release_toggle_legacy));
         legacyToggle.setFactory(new ToggleLegacyViewFactory(view.getContext(), legacyToggle));
@@ -82,6 +84,15 @@ public class ReleaseListView {
     public void showLatestRelease(Release latestRelease) {
         latestVersionText.setText(formatTitle(latestRelease));
         latestVersionChip.setVisibility(View.VISIBLE);
+        latestChanges.setText(formatDescription(latestRelease));
+    }
+
+    private CharSequence formatDescription(Release latestRelease) {
+        if (TextUtils.isEmpty(latestRelease.getBody())) {
+            return resources.getString(R.string.no_body);
+        } else {
+            return latestRelease.getBody();
+        }
     }
 
     public void showLegacyReleases(List<Release> legacyReleases) {

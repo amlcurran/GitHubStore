@@ -6,25 +6,35 @@
               android:layout_height="match_parent"
         android:animateLayoutChanges="true">
 
-    <LinearLayout
+    <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:gravity="center_vertical"
             android:id="@+id/releases_latest_version_chip"
-            android:layout_height="64dp">
+            android:layout_height="wrap_content">
 
         <view
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="56dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"
                 class="uk.co.amlcurran.githubstore.release.DownloadButton"
-                android:id="@+id/releases_latest_version_dl"/>
+                android:id="@+id/releases_latest_version_dl"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"/>
 
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_toRightOf="@+id/releases_latest_version_dl"
+                android:layout_toEndOf="@+id/releases_latest_version_dl"
+                android:layout_alignTop="@+id/releases_latest_version_dl"
+                android:layout_alignBottom="@+id/releases_latest_version_dl"
+                android:gravity="center_vertical">
 
             <TextView
                     android:layout_width="wrap_content"
@@ -42,12 +52,24 @@
                     android:id="@+id/releases_latest_version"/>
         </LinearLayout>
 
-    </LinearLayout>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                tools:text="New Text"
+                android:id="@+id/releases_latest_changes"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/releases_latest_version_dl"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+    </RelativeLayout>
 
     <TextSwitcher
             android:layout_width="match_parent"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_height="36dp"
             android:id="@+id/release_toggle_legacy" />
 
