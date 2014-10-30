@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:gravity="center_vertical"
-          android:autoText="false"
-          android:background="?android:attr/selectableItemBackground">
+          android:drawableLeft="@drawable/ic_unfold_more"
+          android:drawableStart="@drawable/ic_unfold_more"
+          android:background="?android:attr/selectableItemBackground"
+          tools:text="Hello!">
 
 </TextView>
