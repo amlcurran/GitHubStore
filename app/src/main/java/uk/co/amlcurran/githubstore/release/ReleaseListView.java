@@ -14,7 +14,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.amlcurran.githubstore.DownloadButton;
 import uk.co.amlcurran.githubstore.R;
 
 public class ReleaseListView {

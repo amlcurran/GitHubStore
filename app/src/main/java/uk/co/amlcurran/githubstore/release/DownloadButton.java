@@ -1,4 +1,4 @@
-package uk.co.amlcurran.githubstore;
+package uk.co.amlcurran.githubstore.release;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import uk.co.amlcurran.githubstore.R;
 import uk.co.amlcurran.viewcontroller.AnimateUtils;
 
 public class DownloadButton extends FrameLayout {

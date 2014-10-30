@@ -36,7 +36,7 @@
             android:minWidth="48dp"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
-            class="uk.co.amlcurran.githubstore.DownloadButton"
+            class="uk.co.amlcurran.githubstore.release.DownloadButton"
             android:id="@+id/button_download"/>
 
 </LinearLayout>

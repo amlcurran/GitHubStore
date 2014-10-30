@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:minWidth="48dp"
             android:layout_height="match_parent"
-            class="uk.co.amlcurran.githubstore.DownloadButton"
+            class="uk.co.amlcurran.githubstore.release.DownloadButton"
             android:id="@+id/button_download"/>
 
 </LinearLayout>
