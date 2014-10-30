@@ -23,6 +23,7 @@ public class ReleaseListView {
     private final Listener listener;
     private final Resources resources;
     private final TextView latestVersionText;
+    private final DownloadButton latestDownloadButton;
 
     public ReleaseListView(View view, Listener listener, Resources resources) {
         this.listener = listener;
@@ -32,6 +33,8 @@ public class ReleaseListView {
         releasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         releasesListView.setAdapter(releasesAdapter);
         latestVersionText = ((TextView) view.findViewById(R.id.releases_latest_version));
+        latestDownloadButton = ((DownloadButton) view.findViewById(R.id.releases_latest_version_dl));
+        latestDownloadButton.setListener(new LatestDownloadButtonListener());
     }
 
     public void downloadingAsset(Release release, int apkIndex) {
@@ -39,6 +42,8 @@ public class ReleaseListView {
         downloadingItems.add(release);
         if (index > 0) {
             releasesAdapter.notifyItemChanged(index - 1);
+        } else {
+            latestDownloadButton.setDownloading();
         }
     }
 
@@ -48,6 +53,8 @@ public class ReleaseListView {
         downloadingItems.remove(release);
         if (index > 0) {
             releasesAdapter.notifyItemChanged(index - 1);
+        } else {
+            latestDownloadButton.setDownloaded();
         }
     }
 
@@ -161,6 +168,20 @@ public class ReleaseListView {
                     releaseSelectedListener.openApk(release);
                 }
             });
+        }
+
+    }
+
+    private class LatestDownloadButtonListener implements DownloadButton.Listener {
+
+        @Override
+        public void requestDownload() {
+            listener.downloadRelease(releaseList.get(0));
+        }
+
+        @Override
+        public void openApk() {
+            listener.openApk(releaseList.get(0));
         }
 
     }
