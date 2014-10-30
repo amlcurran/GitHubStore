@@ -2,6 +2,7 @@ package uk.co.amlcurran.githubstore;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,8 +39,17 @@ public class DownloadButton extends FrameLayout {
         imageView = ((ImageView) findViewById(R.id.download_button));
         setOnClickListener(new StartDownloadListener());
         progress = findViewById(R.id.download_progress);
-        interpolator = AnimateUtils.getInterpolator(context);
+        if (!isInEditMode()) {
+            interpolator = AnimateUtils.getInterpolator(context);
+        } else {
+            interpolator = null;
+        }
         animationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+
+        TypedArray array = context.obtainStyledAttributes(attrs, new int[] { android.R.attr.selectableItemBackground },
+                defStyleAttr, whatever);
+        setBackground(array.getDrawable(0));
+        array.recycle();
     }
 
     public void setDownloading() {
