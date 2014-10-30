@@ -31,13 +31,16 @@ public class ReleaseListView {
     public ReleaseListView(View view, Listener listener, Resources resources) {
         this.resources = resources;
         releasesAdapter = new LegacyReleaseAdapter(listener, resources);
+
         legacyReleasesListView = ((RecyclerView) view.findViewById(R.id.releases_list));
         legacyReleasesListView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         legacyReleasesListView.setAdapter(releasesAdapter);
         legacyReleasesListView.setVisibility(View.GONE);
+
         latestVersionText = ((TextView) view.findViewById(R.id.releases_latest_version));
         latestVersionChip = view.findViewById(R.id.releases_latest_version_chip);
         latestVersionChip.setVisibility(View.GONE);
+
         latestDownloadButton = ((DownloadButton) view.findViewById(R.id.releases_latest_version_dl));
         latestDownloadButton.setListener(new LatestDownloadButtonListener(listener));
 
