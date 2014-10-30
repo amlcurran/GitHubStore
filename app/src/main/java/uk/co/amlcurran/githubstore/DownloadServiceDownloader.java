@@ -10,6 +10,11 @@ import android.os.Looper;
 import java.io.File;
 import java.net.URI;
 
+import uk.co.amlcurran.githubstore.release.ApkAsset;
+import uk.co.amlcurran.githubstore.release.Downloader;
+import uk.co.amlcurran.githubstore.release.Release;
+import uk.co.amlcurran.githubstore.release.ReleaseInfoRepository;
+
 class DownloadServiceDownloader implements Downloader {
     private final DownloadManager downloadManager;
     private final ReleaseInfoRepository releaseInfoRepository;

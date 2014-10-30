@@ -1,4 +1,4 @@
-package uk.co.amlcurran.githubstore;
+package uk.co.amlcurran.githubstore.release;
 
 public class RecentFirstComparator implements java.util.Comparator<Release> {
     @Override

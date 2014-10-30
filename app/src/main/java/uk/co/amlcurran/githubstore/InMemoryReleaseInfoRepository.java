@@ -4,6 +4,9 @@ import android.util.SparseArray;
 
 import java.net.URI;
 
+import uk.co.amlcurran.githubstore.release.Release;
+import uk.co.amlcurran.githubstore.release.ReleaseInfoRepository;
+
 class InMemoryReleaseInfoRepository implements ReleaseInfoRepository {
 
     private SparseArray<URI> store = new SparseArray<URI>();

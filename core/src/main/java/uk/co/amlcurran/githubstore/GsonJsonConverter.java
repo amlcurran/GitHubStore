@@ -10,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.amlcurran.githubstore.release.ApkAsset;
+import uk.co.amlcurran.githubstore.release.Release;
+
 public class GsonJsonConverter implements JsonConverter {
 
     private static final String APK_CONTENT_TYPE = "application/vnd.android.package-archive";

@@ -1,7 +1,9 @@
-package uk.co.amlcurran.githubstore;
+package uk.co.amlcurran.githubstore.release;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import uk.co.amlcurran.githubstore.Time;
 
 public class Release {
     private final String releaseName;

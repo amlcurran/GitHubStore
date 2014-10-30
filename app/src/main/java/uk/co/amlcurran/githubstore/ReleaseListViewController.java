@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import uk.co.amlcurran.githubstore.release.Downloader;
+import uk.co.amlcurran.githubstore.release.Installer;
+import uk.co.amlcurran.githubstore.release.Release;
 import uk.co.amlcurran.viewcontroller.ViewController;
 
 public class ReleaseListViewController implements ViewController {

@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.amlcurran.githubstore.release.Release;
+
 public class ReleaseListView {
     private final ReleaseAdapter releasesAdapter;
     private final List<Release> releaseList = new ArrayList<Release>();

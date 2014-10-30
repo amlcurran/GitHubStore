@@ -6,6 +6,10 @@ import android.net.Uri;
 
 import java.net.URI;
 
+import uk.co.amlcurran.githubstore.release.Installer;
+import uk.co.amlcurran.githubstore.release.Release;
+import uk.co.amlcurran.githubstore.release.ReleaseInfoRepository;
+
 class AndroidInstaller implements Installer {
     private final Context context;
     private final ReleaseInfoRepository releaseInfoRepository;

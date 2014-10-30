@@ -3,6 +3,9 @@ package uk.co.amlcurran.githubstore;
 import java.util.Collections;
 import java.util.List;
 
+import uk.co.amlcurran.githubstore.release.RecentFirstComparator;
+import uk.co.amlcurran.githubstore.release.Release;
+
 public class GithubApi {
 
     private final HttpClient httpClient;

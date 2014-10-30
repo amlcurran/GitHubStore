@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import uk.co.amlcurran.githubstore.release.Release;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
