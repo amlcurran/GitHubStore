@@ -56,9 +56,17 @@ public class BasicQueryActivity extends ActionBarActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (!transitionManager.pop()) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.basic_query, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint(getString(R.string.query_hint));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

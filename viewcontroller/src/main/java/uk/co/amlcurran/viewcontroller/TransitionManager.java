@@ -10,10 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class TransitionManager {
 
     private final ViewGroup viewGroup;
     private final LayoutInflater layoutInflater;
+    private final Deque<ViewController> backstack = new ArrayDeque<ViewController>();
 
     @NonNull
     private ViewController currentViewController = ViewController.NONE;
@@ -56,6 +60,13 @@ public class TransitionManager {
     }
 
     public void push(@NonNull ViewController viewController) {
+        if (currentViewController != ViewController.NONE) {
+            backstack.push(currentViewController);
+        }
+        replace(viewController);
+    }
+
+    private void replace(ViewController viewController) {
         currentViewController.popped();
         viewGroup.removeAllViews();
         viewGroup.addView(viewController.inflateView(layoutInflater, viewGroup));
@@ -74,5 +85,15 @@ public class TransitionManager {
     public void stop() {
         hasStarted = false;
         currentViewController.stop();
+    }
+
+    public boolean pop() {
+        if (backstack.size() > 0) {
+            ViewController controller = backstack.pop();
+            replace(controller);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
