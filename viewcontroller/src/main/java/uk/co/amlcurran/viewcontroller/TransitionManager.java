@@ -22,11 +22,20 @@ public class TransitionManager {
     @NonNull
     private ViewController currentViewController = ViewController.NONE;
     private boolean hasStarted;
+    private TitleListener titleListener;
 
     public TransitionManager(Activity activity, ViewGroup viewGroup) {
         this.viewGroup = viewGroup;
         this.layoutInflater = LayoutInflater.from(activity);
         setupLayoutAnimations(activity);
+    }
+
+    public void setTitleListener(TitleListener titleListener) {
+        if (titleListener == null) {
+            this.titleListener = TitleListener.NONE;
+        } else {
+            this.titleListener = titleListener;
+        }
     }
 
     private void setupLayoutAnimations(Activity activity) {
@@ -75,6 +84,13 @@ public class TransitionManager {
             viewController.start();
         }
         currentViewController = viewController;
+
+        // This deals with the title
+        if (currentViewController instanceof Titleable) {
+            titleListener.titleChanged(((Titleable) currentViewController).getTitle());
+        } else {
+            titleListener.titleRemoved();
+        }
     }
 
     public void start() {

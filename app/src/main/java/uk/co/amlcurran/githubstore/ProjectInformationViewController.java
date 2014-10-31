@@ -5,13 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import uk.co.amlcurran.githubstore.release.ReleaseListViewController;
+import uk.co.amlcurran.viewcontroller.Titleable;
 import uk.co.amlcurran.viewcontroller.ViewController;
 
-public class ProjectInformationViewController implements ViewController {
+public class ProjectInformationViewController implements ViewController, Titleable {
 
     private final GithubApi githubApi;
     private final BasicProjectItem basicProjectItem;
     private final ReleaseListViewController releaseListViewController;
+    private final String title;
     private ProjectInformationView projectInformationView;
     private AsyncTask getProject;
 
@@ -19,6 +21,7 @@ public class ProjectInformationViewController implements ViewController {
         this.githubApi = githubApi;
         this.basicProjectItem = basicProjectItem;
         this.releaseListViewController = releaseListViewController;
+        this.title = basicProjectItem.getUser() + "/" + basicProjectItem.getProjectName();
     }
 
     @Override
@@ -64,4 +67,8 @@ public class ProjectInformationViewController implements ViewController {
         releaseListViewController.popped();
     }
 
+    @Override
+    public CharSequence getTitle() {
+        return title;
+    }
 }

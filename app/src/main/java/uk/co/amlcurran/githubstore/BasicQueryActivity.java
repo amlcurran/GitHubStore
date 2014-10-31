@@ -14,10 +14,11 @@ import uk.co.amlcurran.githubstore.release.Downloader;
 import uk.co.amlcurran.githubstore.release.Installer;
 import uk.co.amlcurran.githubstore.release.ReleaseInfoRepository;
 import uk.co.amlcurran.githubstore.release.ReleaseListViewController;
+import uk.co.amlcurran.viewcontroller.TitleListener;
 import uk.co.amlcurran.viewcontroller.TransitionManager;
 
 
-public class BasicQueryActivity extends ActionBarActivity {
+public class BasicQueryActivity extends ActionBarActivity implements TitleListener {
 
     private GithubApi githubApi;
     private TransitionManager transitionManager;
@@ -39,6 +40,7 @@ public class BasicQueryActivity extends ActionBarActivity {
         installer = new AndroidInstaller(this, releaseInfoRepository);
         githubApi = new GithubApi(new VolleyClient(Volley.newRequestQueue(BasicQueryActivity.this)), new GsonJsonConverter(), new ViewControllerErrorListener());
         transitionManager = new TransitionManager(BasicQueryActivity.this, (ViewGroup) findViewById(R.id.content));
+        transitionManager.setTitleListener(this);
 
         showReleases(new BasicProjectItem("funkyandroid", "iosched"));
     }
@@ -114,6 +116,16 @@ public class BasicQueryActivity extends ActionBarActivity {
     private void showReleases(BasicProjectItem basicProjectItem) {
         ReleaseListViewController releaseListViewController = new ReleaseListViewController(githubApi, downloader, toaster, installer);
         transitionManager.push(new ProjectInformationViewController(githubApi, basicProjectItem, releaseListViewController));
+    }
+
+    @Override
+    public void titleChanged(CharSequence title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void titleRemoved() {
+        getSupportActionBar().setTitle(R.string.app_name);
     }
 
     private class ViewControllerErrorListener implements GithubApi.ErrorListener {
