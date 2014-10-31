@@ -24,7 +24,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:id="@+id/project_description"
-            style="@style/Base.TextAppearance.AppCompat.Small"/>
+            style="@style/Base.TextAppearance.AppCompat.Body1"/>
 
     <FrameLayout
             android:layout_width="fill_parent"
