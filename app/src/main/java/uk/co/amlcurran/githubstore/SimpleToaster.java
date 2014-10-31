@@ -24,4 +24,9 @@ class SimpleToaster implements Toaster {
     public void toast(String toast) {
         Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void incorrectSearchStructure() {
+        Toast.makeText(context, R.string.search_structure_error, Toast.LENGTH_LONG).show();
+    }
 }

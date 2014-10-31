@@ -14,5 +14,6 @@
     <string name="latest_release">Latest release</string>
     <string name="show_old_versions">Show old versions</string>
     <string name="hide_old_versions">Hide old versions</string>
+    <string name="search_structure_error">Search should be of structure {owner}/{repo}</string>
 
 </resources>

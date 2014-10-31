@@ -3,6 +3,7 @@ package uk.co.amlcurran.githubstore;
 import android.app.DownloadManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -57,7 +58,37 @@ public class BasicQueryActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.basic_query, menu);
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                if (validatedStructure(s)) {
+                    showProject(s);
+                    return true;
+                } else {
+                    toaster.incorrectSearchStructure();
+                    return false;
+                }
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private boolean validatedStructure(String s) {
+        String[] split = s.split("/");
+        boolean rightNumber = split.length == 2;
+        return rightNumber && split[0].length() > 0 && split[1].length() > 0;
+    }
+
+    private void showProject(String searchQuery) {
+        String[] strings = searchQuery.split("/");
+        BasicProjectItem item = new BasicProjectItem(strings[0], strings[1]);
+        showReleases(item);
     }
 
     @Override

@@ -10,4 +10,6 @@ public interface Toaster {
     void multipleApksAvailable();
 
     void toast(String toast);
+
+    void incorrectSearchStructure();
 }
